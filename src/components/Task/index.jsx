@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { TaskCard } from "./styles";
+import { ButtonContainer, TaskCard, TasksContentContainer } from "./styles";
 import { TaskButton, TodoText } from "../../screens/home/styles";
 import {BsCheckLg} from "react-icons/bs"
 
-export default function Task({ content }) {
-  const [taskCompleted, setTaskCompleted] = useState(false);
+export default function Task({ content, id, onCheck, done }) {
 
-  const handleTaskCompleted = () => {
-    setTaskCompleted(!taskCompleted);
-  };
+  const handleDone = () => {
+    onCheck(id);
+  }
 
   return (
     <TaskCard>
-      {taskCompleted ? <TaskButton checkedButton onClick={handleTaskCompleted}><BsCheckLg /></TaskButton> : <TaskButton checkButton onClick={handleTaskCompleted}/>}
-      <TodoText>{content}</TodoText>
+      <ButtonContainer>
+      {done ? <TaskButton checkedButton onClick={handleDone}><BsCheckLg /></TaskButton> : <TaskButton checkButton onClick={handleDone}/>}
+      </ButtonContainer>
+      <TasksContentContainer >
+        <TodoText>{content}</TodoText>
+      </TasksContentContainer>
     </TaskCard>
   );
 }
