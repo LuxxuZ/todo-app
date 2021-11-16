@@ -22,6 +22,7 @@ import {
 } from "./themes";
 import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { differenceInDays, format } from "date-fns/esm";
+import { formatDistance, subDays } from "date-fns";
 
 export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
   const [editMode, setEditMode] = useState(false);
