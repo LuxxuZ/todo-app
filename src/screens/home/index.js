@@ -67,6 +67,11 @@ function Home() {
     setTasks(updatedTasks);
   };
 
+  const handleDeleteTask = (id) => {
+    const filteredTasks = tasks.filter((currentTask) => currentTask.id !== id);
+    setTasks(filteredTasks);
+  };
+
   return (
     <MainContainer>
       <TodoContainer>
@@ -112,6 +117,7 @@ function Home() {
                 key={uuidv4()}
                 onCheck={handleFinishTask}
                 onEdit={handleEditTask}
+                onDelete={handleDeleteTask}
               />
             ))}
         </TasksContainer>
@@ -122,7 +128,12 @@ function Home() {
           {tasks
             .filter((finishedTask) => finishedTask.done)
             .map((task) => (
-              <Task {...task} key={uuidv4()} onCheck={handleFinishTask} />
+              <Task
+                {...task}
+                key={uuidv4()}
+                onCheck={handleFinishTask}
+                onDelete={handleDeleteTask}
+              />
             ))}
         </TasksContainer>
       </TodoContainer>

@@ -21,10 +21,18 @@ import {
   defaultDate,
 } from "./themes";
 import { BsCheckLg, BsCalendar } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
-import { formatDistance, subDays } from "date-fns";
 
-export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
+export default function Task({
+  content,
+  id,
+  onCheck,
+  done,
+  onEdit,
+  createAt,
+  onDelete,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
   const [createDate, setCreateDate] = useState("");
@@ -32,6 +40,7 @@ export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
   const [dateCardTheme, setDateCardTheme] = useState();
 
   const buttonTheme = done ? checkedButton : checkButton;
+  const textDecoration = done && "line-through";
 
   const handleDone = () => {
     onCheck(id);
@@ -45,6 +54,10 @@ export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
 
   const onChangeInput = (event) => {
     setTaskContent(event.target.value);
+  };
+
+  const handleDelete = () => {
+    onDelete(id);
   };
 
   useEffect(() => {
@@ -86,7 +99,9 @@ export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
                 />
               </TodoForm>
             ) : (
-              <TodoText size="1.375rem">{content}</TodoText>
+              <TodoText decoration={textDecoration} size="1.375rem">
+                {content}
+              </TodoText>
             )}
           </TaskTextContainer>
           <DateContainer>
@@ -100,7 +115,9 @@ export default function Task({ content, id, onCheck, done, onEdit, createAt }) {
         </TasksContentContainer>
       </TaskContainer>
       <DeleteButtonDiv>
-        <DeleteButton></DeleteButton>
+        <DeleteButton onClick={handleDelete}>
+          <MdDelete />
+        </DeleteButton>
       </DeleteButtonDiv>
     </TaskCard>
   );

@@ -30,7 +30,6 @@ export const ButtonContainer = styled.div`
   margin-top: 1.25rem;
   margin-left: 1.25rem;
   margin-right: 1.25rem;
-  cursor: pointer;
 `;
 
 export const DateContainer = styled.div`
@@ -75,11 +74,13 @@ export const DeleteButtonDiv = styled.div`
   margin-top: 1.25rem;
   margin-left: 1.25rem;
   margin-right: 1.25rem;
-  cursor: pointer;
 `;
 
 export const DeleteButton = styled.div`
   width: 2.25rem;
   height: 2.25rem;
-  background-color: crimson;
+  font-size: 22px;
+  background-color: transparent;
+  color: #5ebcf1;
+  cursor: pointer;
 `;

@@ -52,6 +52,7 @@ export const TodoText = styled.p`
   font-size: ${(props) => props.size};
   font-weight: normal;
   word-break: break-word;
+  text-decoration: ${(props) => props.decoration};
 `;
 
 export const Title = styled.h1`
@@ -83,6 +84,7 @@ export const TaskButton = styled.div`
       border: 0.25rem solid #5ebcf1;
       border-radius: 0.875rem;
       font-size: 1.563rem;
+      cursor: pointer;
     `}
 `;
 
