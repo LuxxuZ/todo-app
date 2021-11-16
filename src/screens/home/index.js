@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { HiPlus } from "react-icons/hi";
 import "./styles.css";
@@ -48,12 +48,8 @@ function Home() {
   const handleFinishTask = (id) => {
     const updatedTasks = tasks.map((currentTask) => {
       if (currentTask.id === id) {
-<<<<<<< HEAD
-        currentTask.done = true;
-=======
         const taskEstate = currentTask.done;
         currentTask.done = !taskEstate;
->>>>>>> 1e82b570af603e3036278be71906c6a9e7a5724c
       }
       return currentTask;
     });

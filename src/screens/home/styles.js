@@ -13,6 +13,7 @@ export const TodoContainer = styled.div`
   align-items: start;
   width: 43.75rem;
   height: 100vh;
+  color: #131313;
 `;
 
 export const TasksContainer = styled.div`
@@ -45,7 +46,6 @@ export const NewTaskInput = styled.input`
   outline-style: none;
   font-size: 1.375rem;
   font-weight: normal;
-  color: #131313;
 `;
 
 export const TodoText = styled.p`
