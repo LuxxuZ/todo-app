@@ -13,6 +13,7 @@ export const TodoContainer = styled.div`
   align-items: start;
   width: 43.75rem;
   height: 100vh;
+  color: #131313;
 `;
 
 export const TasksContainer = styled.div`
@@ -25,7 +26,7 @@ export const NewTaskContainer = styled.div`
   margin-top: 1.25rem;
   height: 4.688rem;
   width: 100%;
-  padding-inline: 1.25rem;
+  padding-left: 1.25rem;
   align-items: center;
   background-color: #f3f3f3;
   border-radius: 1.25rem;
@@ -37,7 +38,7 @@ export const NewTaskDiv = styled.div`
   width: 100%;
 `;
 
-export const NewTaskInput = styled.input`
+export const TaskInput = styled.input`
   width: 31.25rem;
   height: 1.875rem;
   border: 0;
@@ -45,14 +46,11 @@ export const NewTaskInput = styled.input`
   outline-style: none;
   font-size: 1.375rem;
   font-weight: normal;
-  color: #131313;
 `;
 
 export const TodoText = styled.p`
-  font-size: 1.375rem;
+  font-size: ${(props) => props.size};
   font-weight: normal;
-  margin-right: 1.375rem;
-  color: #131313;
   word-break: break-word;
 `;
 
@@ -76,22 +74,12 @@ export const TaskButton = styled.div`
   ${(props) =>
     props.checkButton &&
     css`
-      width: 2.5rem;
-      height: 2.5rem;
-      background: transparent;
-      border: 0.25rem solid #5ebcf1;
-      border-radius: 0.875rem;
-    `}
-
-  ${(props) =>
-    props.checkedButton &&
-    css`
       display: flex;
       justify-content: center;
       align-items: center;
       width: 2.5rem;
       height: 2.5rem;
-      background: #5ebcf1;
+      background: ${(props) => props.theme.bg};
       border: 0.25rem solid #5ebcf1;
       border-radius: 0.875rem;
       font-size: 1.563rem;
@@ -103,3 +91,5 @@ export const ButtonContainer = styled.div`
   height: 2.5rem;
   margin-right: 0.375rem;
 `;
+
+export const TodoForm = styled.form``;

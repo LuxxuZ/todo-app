@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { HiPlus } from "react-icons/hi";
 import "./styles.css";
@@ -8,18 +8,20 @@ import {
   MainContainer,
   NewTaskContainer,
   NewTaskDiv,
-  NewTaskInput,
+  TaskInput,
   TaskButton,
   TasksContainer,
   Title,
   TodoContainer,
   TodoText,
+  TodoForm,
 } from "../home/styles";
 import Task from "../../components/Task";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+
   const [focus, setFocus] = useState(false);
   const pendingSize = tasks.filter((task) => !task.done).length;
   const finishedSize = tasks.filter((task) => task.done).length;
@@ -36,13 +38,22 @@ function Home() {
         done: false,
       },
     ]);
-
     setNewTask("");
     setFocus(false);
   };
 
   const onChangeInput = (event) => {
     setNewTask(event.target.value);
+  };
+
+  const handleEditTask = (id, taskContent) => {
+    const editTasks = tasks.map((currentTask) => {
+      if (currentTask.id === id) {
+        currentTask.content = taskContent;
+      }
+      return currentTask;
+    });
+    setTasks(editTasks);
   };
 
   const handleFinishTask = (id) => {
@@ -71,11 +82,11 @@ function Home() {
                 <HiPlus />
               </TaskButton>
             </ButtonContainer>
-            <form onSubmit={handleAddTask}>
+            <TodoForm onSubmit={handleAddTask}>
               {!focus ? (
-                <TodoText>Add a new task</TodoText>
+                <TodoText size="1.375rem">Add a new task</TodoText>
               ) : (
-                <NewTaskInput
+                <TaskInput
                   required
                   type="text"
                   placeholder="Add a new task"
@@ -85,22 +96,27 @@ function Home() {
                   onBlur={() => setFocus(false)}
                 />
               )}
-            </form>
+            </TodoForm>
           </NewTaskContainer>
         </NewTaskDiv>
 
         {tasks.some((task) => !task.done) && (
-          <TodoText>Tasks - {pendingSize}</TodoText>
+          <TodoText size="1.375rem">Tasks - {pendingSize}</TodoText>
         )}
         <TasksContainer>
           {tasks
             .filter((currentTask) => !currentTask.done)
             .map((task) => (
-              <Task {...task} key={uuidv4()} onCheck={handleFinishTask} />
+              <Task
+                {...task}
+                key={uuidv4()}
+                onCheck={handleFinishTask}
+                onEdit={handleEditTask}
+              />
             ))}
         </TasksContainer>
         {tasks.some((task) => task.done) && (
-          <TodoText>Completed Tasks - {finishedSize}</TodoText>
+          <TodoText size="1.375rem">Completed Tasks - {finishedSize}</TodoText>
         )}
         <TasksContainer>
           {tasks
