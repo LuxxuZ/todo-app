@@ -45,7 +45,6 @@ export default function Task({
   const handleDone = () => {
     onCheck(id);
   };
-
   const handleEdit = (event) => {
     event.preventDefault();
 

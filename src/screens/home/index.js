@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { HiPlus } from "react-icons/hi";
 import "./styles.css";
@@ -19,32 +20,47 @@ import {
 import Task from "../../components/Task";
 
 function Home() {
+  const [supabaseClient, setSupabaseClient] = useState();
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
+  const [content, setContent] = useState("");
 
   const [focus, setFocus] = useState(false);
   const pendingSize = tasks.filter((task) => !task.done).length;
   const finishedSize = tasks.filter((task) => task.done).length;
 
-  const handleAddTask = (event) => {
+  useEffect(() => {
+    const supabaseKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTM3NjIxNiwiZXhwIjoxOTU0OTUyMjE2fQ.kcXseb_m6vRM9rrpv3s27QQFDGeDBOeQZlo5Z_Xk8kk";
+    const supabaseUrl = "https://gbmqcxzcxaegwgkwjcrf.supabase.co";
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    setSupabaseClient(supabase);
+  }, []);
+
+  const handleAddTask = async (event) => {
     event.preventDefault();
 
-    setTasks([
-      ...tasks,
-      {
-        content: newTask,
-        createAt: new Date(),
-        id: uuidv4(),
-        done: false,
-      },
-    ]);
-    setNewTask("");
-    setFocus(false);
+    supabaseClient &&
+      (await supabaseClient
+        .from("tasks")
+        .insert([{ content }])
+        .then(() => alert("Task Subida")));
+
+    // setTasks([
+    //   ...tasks,
+    //   {
+    //     id: uuidv4(),
+    //     content: newTask,
+    //     createAt: new Date(),
+    //     done: false,
+    //   },
+    // ]);
+
+    // setNewTask("");
+    // setFocus(false);
   };
 
-  const onChangeInput = (event) => {
-    setNewTask(event.target.value);
-  };
+  const handleSetValue = (event, setter) => setter(event.target.value);
 
   const handleEditTask = (id, taskContent) => {
     const editTasks = tasks.map((currentTask) => {
@@ -95,8 +111,8 @@ function Home() {
                   required
                   type="text"
                   placeholder="Add a new task"
-                  value={newTask}
-                  onChange={onChangeInput}
+                  value={content}
+                  onChange={(event) => handleSetValue(event, setContent)}
                   autoFocus={true}
                   onBlur={() => setFocus(false)}
                 />

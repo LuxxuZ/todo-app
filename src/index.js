@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Home from "./screens/home";
 import reportWebVitals from "./reportWebVitals";
+require("dotenv").config();
 
 ReactDOM.render(
   <React.StrictMode>
