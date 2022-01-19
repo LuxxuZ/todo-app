@@ -55,7 +55,9 @@ export const CalendarDiv = styled.div`
   margin-right: 0.25rem;
 `;
 
-export const TaskTextContainer = styled.div``;
+export const TaskTextContainer = styled.div`
+  display: flex;
+`;
 
 export const EditInput = styled.input`
   margin-block: 1.375rem;
@@ -66,6 +68,7 @@ export const EditInput = styled.input`
   outline: 0;
   font-size: 1.375rem;
   font-weight: normal;
+  font-family: "Poppins", sans-serif;
 `;
 
 export const DeleteButtonDiv = styled.div`

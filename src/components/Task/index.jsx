@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   ButtonContainer,
   TaskCard,
@@ -12,7 +12,7 @@ import {
   DeleteButton,
   DeleteButtonDiv,
 } from "./styles";
-import { TaskButton, TodoText, TodoForm } from "../../screens/home/styles";
+import { TaskButton, TodoText, TodoForm } from "../../screens/tasks/styles";
 import {
   checkButton,
   checkedButton,
@@ -24,20 +24,23 @@ import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
 
+const DATE_THEME = {
+  Today: todayCard,
+  Yesterday: yesterdayCard,
+  null: defaultDate,
+};
+
 export default function Task({
   content,
   id,
   onCheck,
   done,
   onEdit,
-  createAt,
+  created_at,
   onDelete,
 }) {
   const [editMode, setEditMode] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
-  const [createDate, setCreateDate] = useState("");
-  const [daysDiference, setDaysDiference] = useState(0);
-  const [dateCardTheme, setDateCardTheme] = useState();
 
   const buttonTheme = done ? checkedButton : checkButton;
   const textDecoration = done && "line-through";
@@ -59,42 +62,38 @@ export default function Task({
     onDelete(id);
   };
 
-  useEffect(() => {
-    setDaysDiference(differenceInDays(new Date(), createAt));
+  const getDate = (date) => {
+    const daysDiference = differenceInDays(new Date(), new Date(date));
     switch (daysDiference) {
       case 0:
-        setCreateDate("Today");
-        setDateCardTheme(todayCard);
-        break;
+        return "Today";
 
       case 1:
-        setCreateDate("Yesterday");
-        setDateCardTheme(yesterdayCard);
-        break;
+        return "Yesterday";
 
       default:
-        setCreateDate(format(createAt, "MM/dd/yyyy"));
-        setDateCardTheme(defaultDate);
+        return null;
     }
-  }, [daysDiference, createAt]);
+  };
 
   return (
     <TaskCard>
       <TaskContainer>
-        <ButtonContainer>
-          <TaskButton checkButton theme={buttonTheme} onClick={handleDone}>
+        <ButtonContainer onClick={handleDone}>
+          <TaskButton checkButton theme={buttonTheme}>
             {done && <BsCheckLg />}
           </TaskButton>
         </ButtonContainer>
         <TasksContentContainer>
           <TaskTextContainer onDoubleClick={() => !done && setEditMode(true)}>
             {editMode ? (
-              <TodoForm onSubmit={handleEdit}>
+              <TodoForm onSubmit={handleEdit} spellCheck="false">
                 <EditInput
                   value={taskContent}
                   onChange={onChangeInput}
                   onBlur={handleEdit}
                   autoFocus={true}
+                  done={done}
                 />
               </TodoForm>
             ) : (
@@ -104,11 +103,14 @@ export default function Task({
             )}
           </TaskTextContainer>
           <DateContainer>
-            <DateCard theme={dateCardTheme}>
+            <DateCard theme={DATE_THEME[getDate(created_at)]}>
               <CalendarDiv>
                 <BsCalendar />
               </CalendarDiv>
-              <TodoText size="0.9375rem">{createDate}</TodoText>
+              <TodoText size="0.9375rem">
+                {getDate(created_at) ||
+                  format(new Date(created_at), "dd/MM/yyyy")}
+              </TodoText>
             </DateCard>
           </DateContainer>
         </TasksContentContainer>

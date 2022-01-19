@@ -3,4 +3,15 @@ body {
   margin: 0;
 
   font-family: "Poppins", sans-serif;
+
+  color: #131313;
+}
+
+.form-input-text {
+  font-family: "Poppins", sans-serif !important;
+  font-weigth: 600;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
 }

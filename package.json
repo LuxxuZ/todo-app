@@ -1,5 +1,5 @@
 {
-  "name": "todo-app",
+  "name": "todo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,9 +9,11 @@
     "@testing-library/user-event": "^12.1.10",
     "date-fns": "^2.25.0",
     "dotenv": "^10.0.0",
+    "lodash.orderby": "^4.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "react-spring": "^9.3.0",
     "styled-components": "^5.3.3",
@@ -41,5 +43,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "electron": "^16.0.5"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/LuxxuZ/todo-app.git",
+  "author": "Ricardo Zsabo <ricardo.zsabo@gmail.com>",
+  "license": "MIT"
 }

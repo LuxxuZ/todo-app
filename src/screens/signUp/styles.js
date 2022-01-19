@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const HomeMainContainer = styled.div`
+export const SignUpMainContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -26,13 +26,13 @@ export const FormMainContainer = styled.div`
   height: 100vh;
 `;
 
-export const SignInContainerRow = styled.div`
+export const SignUpContainerRow = styled.div`
   display: flex;
   flex-direction: row;
   color: #5f5f5f;
 `;
 
-export const SignInContainer = styled.div`
+export const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -44,7 +44,7 @@ export const FormContainer = styled.div`
   margin-top: 0.625rem;
 `;
 
-export const LoginContainer = styled.div`
+export const RegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -81,7 +81,7 @@ export const InputLogoContainer = styled.div`
   font-size: 1.5rem;
 `;
 
-export const LoginInput = styled.input`
+export const RegisterInput = styled.input`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,7 +101,7 @@ export const TextContainer = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-  height: 40vh;
+  height: 45vh;
   position: relative;
 `;
 
@@ -122,8 +122,9 @@ export const LinkText = styled.p`
   cursor: pointer;
 `;
 
-export const LoginButton = styled.button`
+export const RegisterButton = styled.button`
   display: flex;
+  margin-top: 1.25rem;
   border: 0;
   border-radius: 0.75rem;
   background-color: #54aee0;
@@ -139,31 +140,29 @@ export const LoginButton = styled.button`
 
 export const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-self: center;
-  margin-top: 1.25rem;
 `;
 
-export const AltSgInMainContainer = styled.div`
+export const AltSgUpMainContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
 `;
 
-export const AltSgInButton = styled.div`
+export const AltSgUpButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1.25rem;
   margin-right: 0.625rem;
   margin-left: 0.625rem;
-  margin-top: 1.25rem;
   background-color: #e8e8e8;
   border: 0.125rem solid #e2e2e2;
   border-radius: 0.625rem;
   cursor: pointer;
 `;
 
-export const AltSgInLogo = styled.div`
+export const AltSgUpLogo = styled.div`
   height: 1.625rem;
   padding: 0.5625rem;
 `;
