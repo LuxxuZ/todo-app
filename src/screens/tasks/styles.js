@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { animated } from "react-spring";
 
 export const MainContainer = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const MainContainer = styled.div`
   height: 100vh;
 `;
 
-export const TittleContainer = styled.div`
+export const TittleContainer = styled(animated.div)`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -15,7 +16,14 @@ export const TittleContainer = styled.div`
   align-items: center;
 `;
 
-export const LogOutButton = styled.div`
+export const TodoTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 15px;
+`;
+
+export const LogOutButton = styled(animated.button)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,9 +31,12 @@ export const LogOutButton = styled.div`
   color: #e04949;
   border-radius: 8px;
   padding-inline: 10px;
-  height: 40%;
+  height: 2rem;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  border: 0;
 `;
 
 export const TodoContainer = styled.div`
@@ -37,7 +48,7 @@ export const TodoContainer = styled.div`
   color: #131313;
 `;
 
-export const NewTaskDiv = styled.div`
+export const NewTaskDiv = styled(animated.div)`
   margin-bottom: 1.875rem;
   height: 4.688rem;
   width: 100%;
@@ -79,11 +90,13 @@ export const TodoText = styled.p`
   margin-right: ${(props) => props.margin_x};
   color: ${(props) => props.color};
   user-select: ${(props) => props.user_select};
+  text-align: ${(props) => props.t_align};
 `;
 
 export const Title = styled.h1`
   font-weight: bold;
   font-size: 1.75rem;
+  margin: 0;
 `;
 
 export const TaskButton = styled.div`

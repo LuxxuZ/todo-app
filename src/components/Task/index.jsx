@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ButtonContainer,
   TaskCard,
@@ -23,6 +23,7 @@ import {
 import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
+import { useSpring } from "react-spring";
 
 const DATE_THEME = {
   Today: todayCard,
@@ -36,22 +37,23 @@ export default function Task({
   onCheck,
   done,
   onEdit,
+  task,
   created_at,
   onDelete,
 }) {
   const [editMode, setEditMode] = useState(false);
-  const [taskContent, setTaskContent] = useState(content);
+  const [taskContent, setTaskContent] = useState(task.content);
 
-  const buttonTheme = done ? checkedButton : checkButton;
-  const textDecoration = done && "line-through";
+  const buttonTheme = task.done ? checkedButton : checkButton;
+  const textDecoration = task.done && "line-through";
 
   const handleDone = () => {
-    onCheck(id);
+    onCheck(task.id);
   };
   const handleEdit = (event) => {
     event.preventDefault();
 
-    onEdit(id, taskContent);
+    onEdit(task.id, taskContent);
   };
 
   const onChangeInput = (event) => {
@@ -59,7 +61,11 @@ export default function Task({
   };
 
   const handleDelete = () => {
-    onDelete(id);
+    onDelete(task.id);
+  };
+
+  const handleDoubleClick = () => {
+    !task.done && setEditMode(true);
   };
 
   const getDate = (date) => {
@@ -76,16 +82,21 @@ export default function Task({
     }
   };
 
+  const fadeIn = useSpring({
+    to: { scale: 1, opacity: 1 },
+    from: { scale: 0, opacity: 0 },
+  });
+
   return (
-    <TaskCard>
+    <TaskCard style={fadeIn}>
       <TaskContainer>
         <ButtonContainer onClick={handleDone}>
           <TaskButton checkButton theme={buttonTheme}>
-            {done && <BsCheckLg />}
+            {task.done && <BsCheckLg />}
           </TaskButton>
         </ButtonContainer>
         <TasksContentContainer>
-          <TaskTextContainer onDoubleClick={() => !done && setEditMode(true)}>
+          <TaskTextContainer onDoubleClick={handleDoubleClick}>
             {editMode ? (
               <TodoForm onSubmit={handleEdit} spellCheck="false">
                 <EditInput
@@ -93,23 +104,28 @@ export default function Task({
                   onChange={onChangeInput}
                   onBlur={handleEdit}
                   autoFocus={true}
-                  done={done}
+                  done={task.done}
+                  required
                 />
               </TodoForm>
             ) : (
-              <TodoText decoration={textDecoration} size="1.375rem">
-                {content}
+              <TodoText
+                decoration={textDecoration}
+                size="1.375rem"
+                t_align="left"
+              >
+                {task.content}
               </TodoText>
             )}
           </TaskTextContainer>
           <DateContainer>
-            <DateCard theme={DATE_THEME[getDate(created_at)]}>
+            <DateCard theme={DATE_THEME[getDate(task.created_at)]}>
               <CalendarDiv>
                 <BsCalendar />
               </CalendarDiv>
               <TodoText size="0.9375rem">
-                {getDate(created_at) ||
-                  format(new Date(created_at), "dd/MM/yyyy")}
+                {getDate(task.created_at) ||
+                  format(new Date(task.created_at), "dd/MM/yyyy")}
               </TodoText>
             </DateCard>
           </DateContainer>

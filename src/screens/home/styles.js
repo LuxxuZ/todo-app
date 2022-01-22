@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { animated } from "react-spring";
 
 export const HomeMainContainer = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const HomeMainContainer = styled.div`
   height: 100vh;
 `;
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +18,7 @@ export const TitleContainer = styled.div`
   height: 100vh;
 `;
 
-export const FormMainContainer = styled.div`
+export const FormMainContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,14 +64,19 @@ export const InputContainer = styled.div`
   background-color: #f2f2f2;
   justify-content: center;
   border-radius: 0.625rem;
-  border: 0.125rem solid #e7e6e6;
+  border: 0.125rem solid;
+  border-color: #e7e6e6;
   cursor: text;
-
   padding: 0;
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
   padding-right: 0.625rem;
   padding-left: 0.625rem;
+  transition: border 100ms ease-in;
+
+  &:focus-within {
+    border-color: #54aee0;
+  }
 `;
 
 export const InputLogoContainer = styled.div`
@@ -93,14 +99,14 @@ export const LoginInput = styled.input`
   background-color: transparent;
 `;
 
-export const TextContainer = styled.div`
+export const TextContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #f6f6f6;
 `;
 
-export const LogoContainer = styled.div`
+export const LogoContainer = styled(animated.div)`
   height: 40vh;
   position: relative;
 `;
@@ -122,7 +128,7 @@ export const LinkText = styled.p`
   cursor: pointer;
 `;
 
-export const LoginButton = styled.button`
+export const LoginButton = styled(animated.button)`
   display: flex;
   border: 0;
   border-radius: 0.75rem;
@@ -135,6 +141,10 @@ export const LoginButton = styled.button`
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 600;
+
+  &:focus-visible {
+    outline: none;
+  }
 `;
 
 export const ButtonContainer = styled.div`

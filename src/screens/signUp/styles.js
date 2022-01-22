@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { animated } from "react-spring";
 
 export const SignUpMainContainer = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const SignUpMainContainer = styled.div`
   height: 100vh;
 `;
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +18,7 @@ export const TitleContainer = styled.div`
   height: 100vh;
 `;
 
-export const FormMainContainer = styled.div`
+export const FormMainContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -71,6 +72,11 @@ export const InputContainer = styled.div`
   padding-bottom: 0.3125rem;
   padding-right: 0.625rem;
   padding-left: 0.625rem;
+  transition: border 100ms ease-in;
+
+  &:focus-within {
+    border-color: #54aee0;
+  }
 `;
 
 export const InputLogoContainer = styled.div`
@@ -93,14 +99,14 @@ export const RegisterInput = styled.input`
   background-color: transparent;
 `;
 
-export const TextContainer = styled.div`
+export const TextContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #f6f6f6;
 `;
 
-export const LogoContainer = styled.div`
+export const LogoContainer = styled(animated.div)`
   height: 45vh;
   position: relative;
 `;
@@ -122,7 +128,7 @@ export const LinkText = styled.p`
   cursor: pointer;
 `;
 
-export const RegisterButton = styled.button`
+export const RegisterButton = styled(animated.button)`
   display: flex;
   margin-top: 1.25rem;
   border: 0;
@@ -136,6 +142,10 @@ export const RegisterButton = styled.button`
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 600;
+
+  &:focus-visible {
+    outline: 3px solid #1896db;
+  }
 `;
 
 export const ButtonContainer = styled.div`

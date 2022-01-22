@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 export const SupabaseContext = createContext({});
 export const TodoContext = createContext([]);
 export const AuthContext = createContext();
+export const TaskLoadContext = createContext(false);
 
 export function SupabaseProvider({ children }) {
   const [supabaseClient, setSupabaseClient] = useState();

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSpring } from "react-spring";
 
 import {
   SupabaseContext,
@@ -49,6 +50,20 @@ function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState();
+
+  const [buttonPressed, setButtonPressed] = useState(false);
+
+  const buttonAnimation = useSpring({
+    to: { scale: buttonPressed ? 0.8 : 1 },
+    from: { scale: 1 },
+    delay: 10,
+  });
+
+  const fadeIn = useSpring({
+    to: { opacity: 1 },
+    from: { opacity: 0 },
+    delay: 300,
+  });
 
   const onStorageChange = (e) => {
     console.log(e);
@@ -124,7 +139,7 @@ function Home() {
   return (
     <HomeMainContainer>
       <TitleContainer>
-        <TextContainer>
+        <TextContainer style={fadeIn}>
           <TodoText size="3.375rem" weight="700" margin="0">
             Ricardo Zsabo{" "}
             <TodoText weight="500" margin="0">
@@ -132,7 +147,7 @@ function Home() {
             </TodoText>
           </TodoText>
         </TextContainer>
-        <LogoContainer>
+        <LogoContainer style={fadeIn}>
           <LogoImg
             src={Logo}
             height="100%"
@@ -142,7 +157,7 @@ function Home() {
           />
         </LogoContainer>
       </TitleContainer>
-      <FormMainContainer>
+      <FormMainContainer style={fadeIn}>
         <SignInContainer>
           <TodoText size="2.375rem" weight="600" margin="0">
             Sign In
@@ -165,47 +180,63 @@ function Home() {
             <FormContainer>
               <SignInContainer>
                 <LoginContainer>
-                  <InputTextContainer>
-                    <TodoText margin="0" color="#5EBCF1" weight="500">
-                      Email
-                    </TodoText>
-                  </InputTextContainer>
+                  <label for="username_input">
+                    <InputTextContainer>
+                      <TodoText margin="0" color="#5EBCF1" weight="500">
+                        Email
+                      </TodoText>
+                    </InputTextContainer>
 
-                  <InputContainer>
-                    <LoginInput
-                      spellCheck="false"
-                      type="email"
-                      placeholder="Your email"
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                    <InputLogoContainer>
-                      <HiMail />
-                    </InputLogoContainer>
-                  </InputContainer>
+                    <InputContainer>
+                      <LoginInput
+                        spellCheck="false"
+                        type="email"
+                        placeholder="Your email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        id="username_input"
+                      />
+                      <InputLogoContainer>
+                        <HiMail />
+                      </InputLogoContainer>
+                    </InputContainer>
+                  </label>
                 </LoginContainer>
                 <LoginContainer>
-                  <InputTextContainer>
-                    <TodoText margin="0" color="#5EBCF1" weight="500">
-                      Password
-                    </TodoText>
-                  </InputTextContainer>
+                  <label for="password_input">
+                    <InputTextContainer>
+                      <TodoText margin="0" color="#5EBCF1" weight="500">
+                        Password
+                      </TodoText>
+                    </InputTextContainer>
 
-                  <InputContainer>
-                    <LoginInput
-                      type="password"
-                      placeholder="Your Password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                    <InputLogoContainer>
-                      <IoMdLock />
-                    </InputLogoContainer>
-                  </InputContainer>
+                    <InputContainer>
+                      <LoginInput
+                        type="password"
+                        placeholder="Your Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        id="password_input"
+                      />
+                      <InputLogoContainer>
+                        <IoMdLock />
+                      </InputLogoContainer>
+                    </InputContainer>
+                  </label>
                 </LoginContainer>
 
                 <ButtonContainer>
-                  <LoginButton>Login</LoginButton>
+                  <LoginButton
+                    onMouseDown={() => {
+                      setButtonPressed(true);
+                    }}
+                    onMouseUp={() => {
+                      setButtonPressed(false);
+                    }}
+                    style={buttonAnimation}
+                  >
+                    Login
+                  </LoginButton>
                 </ButtonContainer>
               </SignInContainer>
             </FormContainer>

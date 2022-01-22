@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { SupabaseContext, AuthContext } from "../../utilities/context-wrapper";
 import { useNavigate } from "react-router-dom";
+import { useSpring } from "react-spring";
 
 import { TodoText } from "../tasks/styles";
 import {
@@ -43,6 +44,19 @@ function Home() {
   const [password, setPassword] = useState("");
   const [signUpError, setSignUpError] = useState();
   const [errorMessage, setErrorMessage] = useState("");
+  const [buttonPressed, setButtonPressed] = useState(false);
+
+  const buttonAnimation = useSpring({
+    to: { scale: buttonPressed ? 0.8 : 1 },
+    from: { scale: 1 },
+    delay: 10,
+  });
+
+  const fadeIn = useSpring({
+    to: { opacity: 1 },
+    from: { opacity: 0 },
+    delay: 300,
+  });
 
   const navigate = useNavigate();
   const handleNavigate = () => {
@@ -50,11 +64,6 @@ function Home() {
   };
 
   const client = useContext(SupabaseContext);
-
-  const onClickButton = (event) => {
-    document.getElementById("sign_up").submit();
-    event.preventDefault();
-  };
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
@@ -99,12 +108,12 @@ function Home() {
   return (
     <SignUpMainContainer>
       <TitleContainer>
-        <TextContainer>
+        <TextContainer style={fadeIn}>
           <TodoText size="3.375rem" weight="bold" margin="0">
             TODO List <br /> Register
           </TodoText>
         </TextContainer>
-        <LogoContainer>
+        <LogoContainer style={fadeIn}>
           <LogoImg
             src={SignUpLogo}
             height="100%"
@@ -114,7 +123,7 @@ function Home() {
           />
         </LogoContainer>
       </TitleContainer>
-      <FormMainContainer>
+      <FormMainContainer style={fadeIn}>
         <SignUpContainer>
           <TodoText size="2.375rem" weight="600" margin="0">
             Sign Up
@@ -194,7 +203,17 @@ function Home() {
                   </InputContainer>
                 </RegisterContainer>
                 <ButtonContainer>
-                  <RegisterButton>Sign Up</RegisterButton>
+                  <RegisterButton
+                    onMouseDown={() => {
+                      setButtonPressed(true);
+                    }}
+                    onMouseUp={() => {
+                      setButtonPressed(false);
+                    }}
+                    style={buttonAnimation}
+                  >
+                    Sign Up
+                  </RegisterButton>
                 </ButtonContainer>
               </SignUpContainer>
             </FormContainer>

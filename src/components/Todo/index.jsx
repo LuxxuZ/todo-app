@@ -1,34 +1,50 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { TodoText } from "../../screens/tasks/styles";
-import { TasksContainer } from "./styles";
+import { TaskCardContainer, TasksContainer } from "./styles";
 import Task from "../Task";
-import { TodoContext, SupabaseContext } from "../../utilities/context-wrapper";
+import {
+  TodoContext,
+  SupabaseContext,
+  TaskLoadContext,
+} from "../../utilities/context-wrapper";
+
+import { useSpring, animated } from "react-spring";
 
 export default function Todo() {
   const client = useContext(SupabaseContext);
   const { tasks, setTasks } = useContext(TodoContext);
+  const [taskLoaded, setTaskLoaded] = useState(false);
+
   // const [taskEstate, setTaskEstate] = useState(false);
 
-  const pendingSize = tasks.filter((task) => !task.done).length;
-  const finishedSize = tasks.filter((task) => task.done).length;
+  const { pendingSize, finishedSize } = useMemo(
+    () => ({
+      pendingSize: tasks?.filter((task) => !task.done).length,
+      finishedSize: tasks?.filter((task) => task.done).length,
+    }),
+    [tasks]
+  );
 
-  const handleEditTask = async (id, taskContent) => {
-    const editTasks = tasks.map((currentTask) => {
-      if (currentTask.id === id) {
-        currentTask.content = taskContent;
-      }
-      return currentTask;
-    });
-    setTasks(editTasks);
+  const handleEditTask = useCallback(
+    async (id, taskContent) => {
+      const editTasks = tasks.map((currentTask) => {
+        if (currentTask.id === id) {
+          currentTask.content = taskContent;
+        }
+        return currentTask;
+      });
+      setTasks(editTasks);
 
-    client &&
-      (await client
-        .from("tasks")
-        .update({ content: taskContent })
-        .eq("id", id));
-  };
+      client &&
+        (await client
+          .from("tasks")
+          .update({ content: taskContent })
+          .eq("id", id));
+    },
+    [client, setTasks, tasks]
+  );
 
   const handleFinishTask = async (id, done) => {
     let taskDone;
@@ -51,6 +67,13 @@ export default function Todo() {
     client && (await client.from("tasks").delete().eq("id", id));
   };
 
+  const AnimatedTask = animated(Task);
+
+  const fadeIn = useSpring({
+    to: { scale: 1, opacity: 1 },
+    from: { scale: 0, opacity: 0 },
+  });
+
   return (
     <>
       {tasks.some((task) => !task.done) && (
@@ -60,13 +83,16 @@ export default function Todo() {
         {tasks
           .filter((currentTask) => !currentTask.done)
           .map((task) => (
-            <Task
-              {...task}
-              key={uuidv4()}
-              onCheck={handleFinishTask}
-              onEdit={handleEditTask}
-              onDelete={handleDeleteTask}
-            />
+            <TaskCardContainer>
+              <AnimatedTask
+                style={fadeIn}
+                task={task}
+                key={task.id}
+                onCheck={handleFinishTask}
+                onEdit={handleEditTask}
+                onDelete={handleDeleteTask}
+              />
+            </TaskCardContainer>
           ))}
       </TasksContainer>
       {tasks.some((task) => task.done) && (
@@ -76,12 +102,14 @@ export default function Todo() {
         {tasks
           .filter((finishedTask) => finishedTask.done)
           .map((task) => (
-            <Task
-              {...task}
-              key={uuidv4()}
-              onCheck={handleFinishTask}
-              onDelete={handleDeleteTask}
-            />
+            <TaskCardContainer>
+              <Task
+                task={task}
+                key={task.id}
+                onCheck={handleFinishTask}
+                onDelete={handleDeleteTask}
+              />
+            </TaskCardContainer>
           ))}
       </TasksContainer>
     </>

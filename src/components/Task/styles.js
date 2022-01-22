@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { animated } from "react-spring";
 
-export const TaskCard = styled.div`
+export const TaskCard = styled(animated.div)`
   display: flex;
   padding-left: 0.5rem;
   justify-content: start;
