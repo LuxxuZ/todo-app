@@ -18,6 +18,7 @@ export const TitleContainer = styled(animated.div)`
   height: 100vh;
 `;
 
+
 export const FormMainContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
@@ -131,16 +132,18 @@ export const LinkText = styled.p`
 export const LoginButton = styled(animated.button)`
   display: flex;
   border: 0;
+  width: 150px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.75rem;
   background-color: #54aee0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 3.125rem;
-  padding-right: 3.125rem;
+
   color: #ffffff;
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 600;
+  user-select: none;
 
   &:focus-visible {
     outline: none;
@@ -188,4 +191,20 @@ export const TextErrorContainer = styled.div`
 export const ErrorContainer = styled.div`
   margin: 0.25rem;
   height: 1.3125rem;
+`;
+
+export const AnimatedLoadingCircle = styled(animated.div)`
+  display: flex;
+  font-size: 30px;
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotateZ(360deg);
+    }
+  }
+
+  animation: rotate 650ms linear infinite;
 `;

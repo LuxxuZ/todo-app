@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { createClient, payload } from "@supabase/supabase-js";
+import { useSpring, config } from "react-spring";
 import {
   SupabaseContext,
   TodoContext,
@@ -29,7 +30,6 @@ import {
   TodoTextContainer,
 } from "./styles";
 import Todo from "../../components/Todo";
-import { useSpring } from "react-spring";
 
 export default function Tasks() {
   const { authToken, setAuthToken } = useContext(AuthContext);
@@ -113,7 +113,7 @@ export default function Tasks() {
   const buttonAnimation = useSpring({
     to: { scale: buttonPressed ? 0.8 : 1 },
     from: { scale: 1 },
-    delay: 100,
+    config: config.stiff,
   });
 
   return (

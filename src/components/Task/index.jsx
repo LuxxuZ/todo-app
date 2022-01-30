@@ -88,7 +88,7 @@ export default function Task({
   });
 
   return (
-    <TaskCard style={fadeIn}>
+    <TaskCard>
       <TaskContainer>
         <ButtonContainer onClick={handleDone}>
           <TaskButton checkButton theme={buttonTheme}>

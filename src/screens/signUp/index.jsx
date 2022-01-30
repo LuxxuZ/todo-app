@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { SupabaseContext, AuthContext } from "../../utilities/context-wrapper";
 import { useNavigate } from "react-router-dom";
-import { useSpring } from "react-spring";
+import { useSpring, config } from "react-spring";
 
 import { TodoText } from "../tasks/styles";
 import {
@@ -26,6 +26,8 @@ import {
   ButtonContainer,
   ErrorContainer,
   TextErrorContainer,
+  AnimatedLoadingCircle,
+  FormNameContainer,
 } from "./styles";
 import SignUpLogo from "../../images/signUpLogo.svg";
 import GoogleLogo from "../../images/Google_Logo.svg";
@@ -34,6 +36,7 @@ import GithubLogo from "../../images/Github_Logo.png";
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
 import { RiUser3Fill } from "react-icons/ri";
+import { BiLoaderAlt } from "react-icons/bi";
 import { InputTextContainer } from "../home/styles";
 
 function Home() {
@@ -45,11 +48,12 @@ function Home() {
   const [signUpError, setSignUpError] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const buttonAnimation = useSpring({
-    to: { scale: buttonPressed ? 0.8 : 1 },
+    to: { scale: buttonPressed ? 0.9 : 1 },
     from: { scale: 1 },
-    delay: 10,
+    config: config.wobbly,
   });
 
   const fadeIn = useSpring({
@@ -67,6 +71,7 @@ function Home() {
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     await client.auth
       .signUp(
@@ -83,7 +88,10 @@ function Home() {
       .then((session) => {
         const credentialsError = session.error;
         setSignUpError(credentialsError);
-        credentialsError && setErrorMessage(credentialsError.message);
+        if (credentialsError) {
+          setErrorMessage(credentialsError.message);
+          setIsLoading(false);
+        }
         setAuthToken(localStorage.getItem("supabase.auth.token"));
         // console.log(signUpError);
       });
@@ -125,23 +133,25 @@ function Home() {
       </TitleContainer>
       <FormMainContainer style={fadeIn}>
         <SignUpContainer>
-          <TodoText size="2.375rem" weight="600" margin="0">
-            Sign Up
-          </TodoText>
-          <SignUpContainerRow>
-            <TodoText size="0.875rem" margin="0" weight="500">
-              Already have an account?
+          <FormNameContainer>
+            <TodoText size="2.375rem" weight="600" margin="0">
+              Sign Up
             </TodoText>
-            <LinkText
-              size="0.875rem"
-              margin="0"
-              margin_x="0.2rem"
-              weight="500"
-              onClick={handleNavigate}
-            >
-              Sign in here
-            </LinkText>
-          </SignUpContainerRow>
+            <SignUpContainerRow>
+              <TodoText size="0.875rem" margin="0" weight="500">
+                Already have an account?
+              </TodoText>
+              <LinkText
+                size="0.875rem"
+                margin="0"
+                margin_x="0.2rem"
+                weight="500"
+                onClick={handleNavigate}
+              >
+                Sign in here
+              </LinkText>
+            </SignUpContainerRow>
+          </FormNameContainer>
           <form id="sign_up" onSubmit={onSubmitForm}>
             <FormContainer>
               <SignUpContainer>
@@ -212,7 +222,13 @@ function Home() {
                     }}
                     style={buttonAnimation}
                   >
-                    Sign Up
+                    {isLoading ? (
+                      <AnimatedLoadingCircle>
+                        <BiLoaderAlt />
+                      </AnimatedLoadingCircle>
+                    ) : (
+                      "Sign Up"
+                    )}
                   </RegisterButton>
                 </ButtonContainer>
               </SignUpContainer>

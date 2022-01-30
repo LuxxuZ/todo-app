@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSpring } from "react-spring";
+import { useSpring, animated, config } from "react-spring";
 
 import {
   SupabaseContext,
@@ -32,6 +32,7 @@ import {
   InputTextContainer,
   ErrorContainer,
   TextErrorContainer,
+  AnimatedLoadingCircle,
 } from "./styles";
 
 import Logo from "../../images/signInLogo.svg";
@@ -39,6 +40,7 @@ import GoogleLogo from "../../images/Google_Logo.svg";
 import GithubLogo from "../../images/Github_Logo.png";
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
+import { BiLoaderAlt } from "react-icons/bi";
 
 function Home() {
   const navigate = useNavigate();
@@ -46,7 +48,7 @@ function Home() {
   const { authToken, setAuthToken } = useContext(AuthContext);
   const { tasks, setTasks } = useContext(TodoContext);
 
-  const [firstLoading, setFirstLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState();
@@ -54,9 +56,9 @@ function Home() {
   const [buttonPressed, setButtonPressed] = useState(false);
 
   const buttonAnimation = useSpring({
-    to: { scale: buttonPressed ? 0.8 : 1 },
+    to: { scale: buttonPressed ? 0.9 : 1 },
     from: { scale: 1 },
-    delay: 10,
+    config: config.wobbly,
   });
 
   const fadeIn = useSpring({
@@ -75,6 +77,7 @@ function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     await client.auth
       .signIn({
@@ -86,7 +89,7 @@ function Home() {
         setLoginError(credentialsError);
         setAuthToken(localStorage.getItem("supabase.auth.token"));
         // console.log(loginError);
-        !credentialsError && navigate("../tasks");
+        credentialsError ? setIsLoading(false) : navigate("../tasks");
       })
 
       .catch((error) => console.log(error));
@@ -118,24 +121,6 @@ function Home() {
     window.addEventListener("storage", onStorageChange);
   }, []);
 
-  useEffect(() => {
-    if (authToken) {
-      const { currentSession } = JSON.parse(authToken || "{}");
-      const { user } = currentSession;
-
-      client &&
-        client
-          .from("tasks")
-          .select("*")
-          .eq("user_id", user.id)
-          .then(({ data = [] }) => {
-            setTasks(data);
-            setFirstLoading(false);
-          })
-          .then(authToken && navigate("../tasks"));
-    }
-  }, [authToken]);
-
   return (
     <HomeMainContainer>
       <TitleContainer>
@@ -152,7 +137,7 @@ function Home() {
             src={Logo}
             height="100%"
             width="100%"
-            alt="1"
+            type="presentation"
             draggable="false"
           />
         </LogoContainer>
@@ -235,7 +220,13 @@ function Home() {
                     }}
                     style={buttonAnimation}
                   >
-                    Login
+                    {isLoading ? (
+                      <AnimatedLoadingCircle>
+                        <BiLoaderAlt />
+                      </AnimatedLoadingCircle>
+                    ) : (
+                      "Login"
+                    )}
                   </LoginButton>
                 </ButtonContainer>
               </SignInContainer>
