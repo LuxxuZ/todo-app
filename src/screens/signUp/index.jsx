@@ -47,8 +47,11 @@ function Home() {
   const [password, setPassword] = useState("");
   const [signUpError, setSignUpError] = useState();
   const [errorMessage, setErrorMessage] = useState("");
-  const [buttonPressed, setButtonPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [googleButtonPressed, setGoogleButtonPressed] = useState(false);
+  const [gitButtonPressed, setGitButtonPressed] = useState(false);
 
   const buttonAnimation = useSpring({
     to: { scale: buttonPressed ? 0.9 : 1 },
@@ -56,16 +59,19 @@ function Home() {
     config: config.wobbly,
   });
 
-  const fadeIn = useSpring({
-    to: { opacity: 1 },
-    from: { opacity: 0 },
-    delay: 300,
+  const googleButtonAnim = useSpring({
+    to: { scale: googleButtonPressed ? 0.85 : 1 },
+    from: { scale: 1 },
+    config: config.wobbly,
+  });
+
+  const gitButtonAnim = useSpring({
+    to: { scale: gitButtonPressed ? 0.85 : 1 },
+    from: { scale: 1 },
+    config: config.wobbly,
   });
 
   const navigate = useNavigate();
-  const handleNavigate = () => {
-    navigate("../");
-  };
 
   const client = useContext(SupabaseContext);
 
@@ -116,12 +122,12 @@ function Home() {
   return (
     <SignUpMainContainer>
       <TitleContainer>
-        <TextContainer style={fadeIn}>
+        <TextContainer>
           <TodoText size="3.375rem" weight="bold" margin="0">
             TODO List <br /> Register
           </TodoText>
         </TextContainer>
-        <LogoContainer style={fadeIn}>
+        <LogoContainer>
           <LogoImg
             src={SignUpLogo}
             height="100%"
@@ -131,7 +137,7 @@ function Home() {
           />
         </LogoContainer>
       </TitleContainer>
-      <FormMainContainer style={fadeIn}>
+      <FormMainContainer>
         <SignUpContainer>
           <FormNameContainer>
             <TodoText size="2.375rem" weight="600" margin="0">
@@ -142,11 +148,11 @@ function Home() {
                 Already have an account?
               </TodoText>
               <LinkText
+                to="../"
                 size="0.875rem"
                 margin="0"
                 margin_x="0.2rem"
                 weight="500"
-                onClick={handleNavigate}
               >
                 Sign in here
               </LinkText>
@@ -214,12 +220,11 @@ function Home() {
                 </RegisterContainer>
                 <ButtonContainer>
                   <RegisterButton
-                    onMouseDown={() => {
-                      setButtonPressed(true);
-                    }}
-                    onMouseUp={() => {
-                      setButtonPressed(false);
-                    }}
+                    onMouseDown={() => setButtonPressed(true)}
+                    onFocus={() => setButtonPressed(true)}
+                    onMouseUp={() => setButtonPressed(false)}
+                    onMouseLeave={() => setButtonPressed(false)}
+                    onBlur={() => setButtonPressed(false)}
                     style={buttonAnimation}
                   >
                     {isLoading ? (
@@ -247,12 +252,28 @@ function Home() {
             Or sign up with
           </TodoText>
           <AltSgUpMainContainer>
-            <AltSgUpButton onClick={handleGoogleAuth}>
+            <AltSgUpButton
+              onClick={handleGoogleAuth}
+              onMouseDown={() => setGoogleButtonPressed(true)}
+              onFocus={() => setGoogleButtonPressed(true)}
+              onMouseUp={() => setGoogleButtonPressed(false)}
+              onMouseLeave={() => setGoogleButtonPressed(false)}
+              onBlur={() => setGoogleButtonPressed(false)}
+              style={googleButtonAnim}
+            >
               <AltSgUpLogo>
                 <LogoImg src={GoogleLogo} height="100%" alt="Google" />
               </AltSgUpLogo>
             </AltSgUpButton>
-            <AltSgUpButton onClick={handleGitAuth}>
+            <AltSgUpButton
+              onClick={handleGitAuth}
+              onMouseDown={() => setGitButtonPressed(true)}
+              onFocus={() => setGitButtonPressed(true)}
+              onMouseUp={() => setGitButtonPressed(false)}
+              onMouseLeave={() => setGitButtonPressed(false)}
+              onBlur={() => setGitButtonPressed(false)}
+              style={gitButtonAnim}
+            >
               <AltSgUpLogo>
                 <LogoImg src={GithubLogo} height="100%" alt="Github" />
               </AltSgUpLogo>

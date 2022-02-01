@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { animated } from "react-spring";
+import { Link } from "react-router-dom";
 
 export const SignUpMainContainer = styled.div`
   display: flex;
@@ -32,6 +33,20 @@ export const FormMainContainer = styled(animated.div)`
   align-items: center;
   width: 50vw;
   height: 100vh;
+  opacity: 0;
+
+  @keyframes formFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-5%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  animation: formFadeIn 250ms ease-out forwards 300ms;
 `;
 
 export const SignUpContainerRow = styled.div`
@@ -111,28 +126,54 @@ export const TextContainer = styled(animated.div)`
   flex-direction: column;
   align-items: center;
   color: #f6f6f6;
+  opacity: 0;
+
+  animation: fadeIn 300ms ease-out 100ms forwards;
 `;
 
 export const LogoContainer = styled(animated.div)`
   height: 45vh;
   position: relative;
+
+  @keyframes fadeIn {
+    0% {
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  animation: fadeIn 250ms ease-out;
 `;
 
 export const LogoImg = styled.img`
   user-select: none;
 `;
 
-export const LinkText = styled.p`
+export const LinkText = styled(Link)`
   font-size: ${(props) => props.size};
   font-weight: ${(props) => props.weight};
   word-break: break-word;
-  text-decoration: ${(props) => props.decoration};
+  text-decoration: none;
   text-align: center;
   margin: ${(props) => props.margin};
   margin-left: ${(props) => props.margin_x};
   margin-right: ${(props) => props.margin_x};
   color: #40b0ee;
   cursor: pointer;
+  outline: none;
+  transition: all 100ms linear;
+
+  &:focus-visible {
+    text-decoration: underline;
+    color: #85d2fc;
+  }
 `;
 
 export const RegisterButton = styled(animated.button)`
@@ -150,8 +191,17 @@ export const RegisterButton = styled(animated.button)`
   font-size: 1.25rem;
   font-weight: 600;
 
+  @keyframes focusTransform {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.9);
+    }
+  }
+
   &:focus-visible {
-    outline: 3px solid #1896db;
+    outline-color: #1c9add;
   }
 `;
 
@@ -166,10 +216,12 @@ export const AltSgUpMainContainer = styled.div`
   justify-content: center;
 `;
 
-export const AltSgUpButton = styled.div`
+export const AltSgUpButton = styled(animated.button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 3rem;
+  width: 3rem;
   margin-top: 1.25rem;
   margin-right: 0.625rem;
   margin-left: 0.625rem;
@@ -177,6 +229,7 @@ export const AltSgUpButton = styled.div`
   border: 0.125rem solid #e2e2e2;
   border-radius: 0.625rem;
   cursor: pointer;
+  outline-color: #3a3a3a;
 `;
 
 export const AltSgUpLogo = styled.div`

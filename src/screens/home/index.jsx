@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSpring, animated, config } from "react-spring";
 
 import {
@@ -54,25 +54,29 @@ function Home() {
   const [loginError, setLoginError] = useState();
 
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [googleButtonPressed, setGoogleButtonPressed] = useState(false);
+  const [gitButtonPressed, setGitButtonPressed] = useState(false);
 
-  const buttonAnimation = useSpring({
+  const buttonAnim = useSpring({
     to: { scale: buttonPressed ? 0.9 : 1 },
     from: { scale: 1 },
     config: config.wobbly,
   });
 
-  const fadeIn = useSpring({
-    to: { opacity: 1 },
-    from: { opacity: 0 },
-    delay: 300,
+  const googleButtonAnim = useSpring({
+    to: { scale: googleButtonPressed ? 0.85 : 1 },
+    from: { scale: 1 },
+    config: config.wobbly,
+  });
+
+  const gitButtonAnim = useSpring({
+    to: { scale: gitButtonPressed ? 0.85 : 1 },
+    from: { scale: 1 },
+    config: config.wobbly,
   });
 
   const onStorageChange = (e) => {
     console.log(e);
-  };
-
-  const handleNavigate = () => {
-    navigate("/register");
   };
 
   const handleSubmit = async (event) => {
@@ -124,7 +128,7 @@ function Home() {
   return (
     <HomeMainContainer>
       <TitleContainer>
-        <TextContainer style={fadeIn}>
+        <TextContainer>
           <TodoText size="3.375rem" weight="700" margin="0">
             Ricardo Zsabo{" "}
             <TodoText weight="500" margin="0">
@@ -132,7 +136,7 @@ function Home() {
             </TodoText>
           </TodoText>
         </TextContainer>
-        <LogoContainer style={fadeIn}>
+        <LogoContainer>
           <LogoImg
             src={Logo}
             height="100%"
@@ -142,7 +146,7 @@ function Home() {
           />
         </LogoContainer>
       </TitleContainer>
-      <FormMainContainer style={fadeIn}>
+      <FormMainContainer>
         <SignInContainer>
           <TodoText size="2.375rem" weight="600" margin="0">
             Sign In
@@ -152,11 +156,11 @@ function Home() {
               Don’t have an account yet?
             </TodoText>
             <LinkText
+              to="/register"
               size="0.875rem"
               margin="0"
               margin_x="0.2rem"
               weight="500"
-              onClick={handleNavigate}
             >
               Create it here
             </LinkText>
@@ -212,13 +216,12 @@ function Home() {
 
                 <ButtonContainer>
                   <LoginButton
-                    onMouseDown={() => {
-                      setButtonPressed(true);
-                    }}
-                    onMouseUp={() => {
-                      setButtonPressed(false);
-                    }}
-                    style={buttonAnimation}
+                    onMouseDown={() => setButtonPressed(true)}
+                    onFocus={() => setButtonPressed(true)}
+                    onMouseUp={() => setButtonPressed(false)}
+                    onMouseLeave={() => setButtonPressed(false)}
+                    onBlur={() => setButtonPressed(false)}
+                    style={buttonAnim}
                   >
                     {isLoading ? (
                       <AnimatedLoadingCircle>
@@ -245,12 +248,28 @@ function Home() {
             Or sign in with
           </TodoText>
           <AltSgInMainContainer>
-            <AltSgInButton onClick={handleGoogleAuth}>
+            <AltSgInButton
+              onClick={handleGoogleAuth}
+              onMouseDown={() => setGoogleButtonPressed(true)}
+              onFocus={() => setGoogleButtonPressed(true)}
+              onMouseUp={() => setGoogleButtonPressed(false)}
+              onMouseLeave={() => setGoogleButtonPressed(false)}
+              onBlur={() => setGoogleButtonPressed(false)}
+              style={googleButtonAnim}
+            >
               <AltSgInLogo>
                 <LogoImg src={GoogleLogo} height="100%" alt="Google" />
               </AltSgInLogo>
             </AltSgInButton>
-            <AltSgInButton onClick={handleGitAuth}>
+            <AltSgInButton
+              onClick={handleGitAuth}
+              onMouseDown={() => setGitButtonPressed(true)}
+              onFocus={() => setGitButtonPressed(true)}
+              onMouseUp={() => setGitButtonPressed(false)}
+              onMouseLeave={() => setGitButtonPressed(false)}
+              onBlur={() => setGitButtonPressed(false)}
+              style={gitButtonAnim}
+            >
               <AltSgInLogo>
                 <LogoImg src={GithubLogo} height="100%" alt="Github" />
               </AltSgInLogo>
