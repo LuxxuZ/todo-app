@@ -27,26 +27,23 @@ export default function Todo() {
     [tasks]
   );
 
-  const handleEditTask = useCallback(
-    async (id, taskContent) => {
-      const editTasks = tasks.map((currentTask) => {
-        if (currentTask.id === id) {
-          currentTask.content = taskContent;
-        }
-        return currentTask;
-      });
-      setTasks(editTasks);
+  const handleEditTask = async (id, taskContent) => {
+    const editTasks = tasks.map((currentTask) => {
+      if (currentTask.id === id) {
+        console.log(currentTask.id, "=", id);
+        currentTask.content = taskContent;
+      }
+      return currentTask;
+    });
+    setTasks(editTasks);
 
-      client &&
-        (await client
-          .from("tasks")
-          .update({ content: taskContent })
-          .eq("id", id));
-    },
-    [client, setTasks, tasks]
-  );
-
-  const handleFinishTask = async (id, done) => {
+    client &&
+      (await client
+        .from("tasks")
+        .update({ content: taskContent })
+        .eq("id", id));
+  };
+  const handleFinishTask = useCallback(async (id) => {
     let taskDone;
     const updatedTasks = tasks.map((currentTask) => {
       if (currentTask.id === id) {
@@ -59,7 +56,7 @@ export default function Todo() {
 
     client &&
       (await client.from("tasks").update({ done: !taskDone }).eq("id", id));
-  };
+  }, []);
 
   const handleDeleteTask = async (id) => {
     const filteredTasks = tasks.filter((currentTask) => currentTask.id !== id);

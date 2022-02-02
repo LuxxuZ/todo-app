@@ -52,7 +52,7 @@ export default function Task({
   };
   const handleEdit = (event) => {
     event.preventDefault();
-
+    setEditMode(false);
     onEdit(task.id, taskContent);
   };
 

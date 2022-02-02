@@ -11,6 +11,19 @@ export const TaskCard = styled(animated.div)`
   border: 0.125rem solid #ededed;
   margin-bottom: 1.875rem;
   border-radius: 1.25rem;
+
+  @keyframes formFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-10%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  animation: formFadeIn 250ms ease-out forwards;
 `;
 
 export const TaskContainer = styled.div`
