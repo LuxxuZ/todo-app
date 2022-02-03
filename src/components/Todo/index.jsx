@@ -84,7 +84,6 @@ export default function Todo() {
               <AnimatedTask
                 style={fadeIn}
                 task={task}
-                key={task.id}
                 onCheck={handleFinishTask}
                 onEdit={handleEditTask}
                 onDelete={handleDeleteTask}
@@ -102,7 +101,6 @@ export default function Todo() {
             <TaskCardContainer>
               <Task
                 task={task}
-                key={task.id}
                 onCheck={handleFinishTask}
                 onDelete={handleDeleteTask}
               />
