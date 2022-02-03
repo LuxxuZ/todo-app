@@ -43,7 +43,7 @@ export default function Todo() {
         .update({ content: taskContent })
         .eq("id", id));
   };
-  const handleFinishTask = useCallback(async (id) => {
+  const handleFinishTask = async (id) => {
     let taskDone;
     const updatedTasks = tasks.map((currentTask) => {
       if (currentTask.id === id) {
@@ -56,7 +56,7 @@ export default function Todo() {
 
     client &&
       (await client.from("tasks").update({ done: !taskDone }).eq("id", id));
-  }, []);
+  };
 
   const handleDeleteTask = async (id) => {
     const filteredTasks = tasks.filter((currentTask) => currentTask.id !== id);
