@@ -37,6 +37,7 @@ export const LogOutButton = styled(animated.button)`
   font-weight: 500;
   margin: 0;
   border: 0;
+  outline-color: #e04949;
 `;
 
 export const TodoContainer = styled.div`
@@ -54,7 +55,7 @@ export const NewTaskDiv = styled(animated.div)`
   width: 100%;
 `;
 
-export const NewTaskContainer = styled.div`
+export const NewTaskContainer = styled(animated.div)`
   display: flex;
   flex-direction: row;
   margin-top: 1.25rem;
@@ -86,6 +87,8 @@ export const TodoText = styled.p`
   text-decoration: ${(props) => props.decoration};
   text-align: center;
   margin: ${(props) => props.margin};
+  margin-top: ${(props) => props.margin_y};
+  margin-bottom: ${(props) => props.margin_y};
   margin-left: ${(props) => props.margin_x};
   margin-right: ${(props) => props.margin_x};
   color: ${(props) => props.color};

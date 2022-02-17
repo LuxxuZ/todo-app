@@ -104,15 +104,25 @@ function Home() {
   };
 
   const handleGoogleAuth = async () => {
-    await client.auth.signIn({
-      provider: "google",
-    });
+    await client.auth.signIn(
+      {
+        provider: "google",
+      },
+      {
+        redirectTo: "http://rztodolist.surge.sh/redirect",
+      }
+    );
   };
 
   const handleGitAuth = async () => {
-    await client.auth.signIn({
-      provider: "github",
-    });
+    await client.auth.signIn(
+      {
+        provider: "github",
+      },
+      {
+        redirectTo: "http://rztodolist.surge.sh/redirect",
+      }
+    );
   };
 
   useEffect(() => {
@@ -132,7 +142,7 @@ function Home() {
             src={SignUpLogo}
             height="100%"
             width="100%"
-            alt="1"
+            alt="Sign Up"
             draggable="false"
           />
         </LogoContainer>

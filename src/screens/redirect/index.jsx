@@ -5,7 +5,9 @@ import {
   SupabaseContext,
   TodoContext,
 } from "../../utilities/context-wrapper";
-import { MainContainer } from "./styles";
+import { LoadIconContainer, MainContainer, TextContainer } from "./styles";
+import { TodoText } from "../tasks/styles";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export default function Redirect() {
   const { tasks, setTasks } = useContext(TodoContext);
@@ -26,21 +28,35 @@ export default function Redirect() {
         .then(({ data = [] }) => {
           setTasks(data);
         })
-        .then(authToken && navigate("../tasks"));
+        .then(authToken ? navigate("../tasks") : navigate("/"));
     }
   }
   useEffect(() => {
-    setTimeout(() => {
-      setAuthToken(localStorage.getItem("supabase.auth.token"));
-    }, 7000);
-  }, []);
+    client && setAuthToken(client.auth.session());
+
+    client &&
+      client.auth.onAuthStateChange((_event, session) => {
+        setAuthToken(session);
+      });
+  }, [client]);
 
   useEffect(() => {
     loadTasks();
   }, [authToken]);
+
   return (
     <MainContainer>
-      <p>Redirecting...</p>
+      <TextContainer>
+        <TodoText margin="0" size="36px">
+          Loading
+        </TodoText>
+        <TodoText margin="0" size="22px" color="#9e9e9e" weight="300">
+          Wait a moment please
+        </TodoText>
+        <LoadIconContainer>
+          <BiLoaderAlt />
+        </LoadIconContainer>
+      </TextContainer>
     </MainContainer>
   );
 }

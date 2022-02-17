@@ -46,8 +46,8 @@ function Home() {
   const navigate = useNavigate();
   const client = useContext(SupabaseContext);
   const { authToken, setAuthToken } = useContext(AuthContext);
-  const { tasks, setTasks } = useContext(TodoContext);
 
+  const [firstLoading, setFirstLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -91,9 +91,9 @@ function Home() {
       .then((session) => {
         const credentialsError = session.error;
         setLoginError(credentialsError);
-        setAuthToken(localStorage.getItem("supabase.auth.token"));
+        // setAuthToken(client.auth.session());
         // console.log(loginError);
-        credentialsError ? setIsLoading(false) : navigate("../tasks");
+        credentialsError && setIsLoading(false);
       })
 
       .catch((error) => console.log(error));
@@ -105,7 +105,7 @@ function Home() {
         provider: "google",
       },
       {
-        redirectTo: "http://localhost:3000/redirect",
+        redirectTo: "http://rztodolist.surge.sh/",
       }
     );
   };
@@ -116,19 +116,31 @@ function Home() {
         provider: "github",
       },
       {
-        redirectTo: "http://localhost:3000/redirect",
+        redirectTo: "http://rztodolist.surge.sh/",
       }
     );
   };
 
   useEffect(() => {
-    window.addEventListener("storage", onStorageChange);
-  }, []);
+    client && setAuthToken(client.auth.session());
+
+    client &&
+      client.auth.onAuthStateChange((_event, session) => {
+        setAuthToken(session);
+      });
+  }, [client]);
+
+  useEffect(() => {
+    if (authToken) {
+      setIsLoading(true);
+      navigate("../tasks");
+    }
+  }, [authToken]);
 
   return (
     <HomeMainContainer>
       <TitleContainer>
-        <TextContainer>
+        <TextContainer id="renderAnimation">
           <TodoText size="3.375rem" weight="700" margin="0">
             Ricardo Zsabo{" "}
             <TodoText weight="500" margin="0">
@@ -136,7 +148,7 @@ function Home() {
             </TodoText>
           </TodoText>
         </TextContainer>
-        <LogoContainer>
+        <LogoContainer id="renderAnimation">
           <LogoImg
             src={Logo}
             height="100%"
@@ -146,8 +158,8 @@ function Home() {
           />
         </LogoContainer>
       </TitleContainer>
-      <FormMainContainer>
-        <SignInContainer>
+      <FormMainContainer firstLoad={firstLoading}>
+        <SignInContainer id="renderAnimation">
           <TodoText size="2.375rem" weight="600" margin="0">
             Sign In
           </TodoText>
@@ -161,6 +173,7 @@ function Home() {
               margin="0"
               margin_x="0.2rem"
               weight="500"
+              onClick={() => setFirstLoading("true")}
             >
               Create it here
             </LinkText>

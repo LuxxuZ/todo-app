@@ -23,7 +23,7 @@ import {
 import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
-import { useSpring } from "react-spring";
+import { useSpring, useChain, config } from "react-spring";
 
 const DATE_THEME = {
   Today: todayCard,
@@ -43,6 +43,7 @@ export default function Task({
 }) {
   const [editMode, setEditMode] = useState(false);
   const [taskContent, setTaskContent] = useState(task.content);
+  const [taskAnim, setTaskAnim] = useState();
 
   const buttonTheme = task.done ? checkedButton : checkButton;
   const textDecoration = task.done && "line-through";
@@ -85,10 +86,20 @@ export default function Task({
   const fadeIn = useSpring({
     to: { scale: 1, opacity: 1 },
     from: { scale: 0, opacity: 0 },
+    config: config.stiff,
   });
 
+  const deleteAnim = useSpring({
+    from: { scale: 1 },
+    to: { scale: 0 },
+  });
+
+  useEffect(() => {
+    setTaskAnim(fadeIn);
+  }, []);
+
   return (
-    <TaskCard>
+    <TaskCard style={taskAnim}>
       <TaskContainer>
         <ButtonContainer onClick={handleDone}>
           <TaskButton checkButton theme={buttonTheme}>
@@ -113,6 +124,7 @@ export default function Task({
                 decoration={textDecoration}
                 size="1.375rem"
                 t_align="left"
+                margin_y="1em"
               >
                 {task.content}
               </TodoText>

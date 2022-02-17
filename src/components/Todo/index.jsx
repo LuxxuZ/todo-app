@@ -1,5 +1,7 @@
-import { useContext, useState, useCallback, useMemo } from "react";
+import { useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { lodash, orderBy } from "lodash.orderby";
+import toast, { Toaster } from "react-hot-toast";
 
 import { TodoText } from "../../screens/tasks/styles";
 import { TaskCardContainer, TasksContainer } from "./styles";
@@ -10,7 +12,7 @@ import {
   TaskLoadContext,
 } from "../../utilities/context-wrapper";
 
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, config } from "react-spring";
 
 export default function Todo() {
   const client = useContext(SupabaseContext);
@@ -30,7 +32,6 @@ export default function Todo() {
   const handleEditTask = async (id, taskContent) => {
     const editTasks = tasks.map((currentTask) => {
       if (currentTask.id === id) {
-        console.log(currentTask.id, "=", id);
         currentTask.content = taskContent;
       }
       return currentTask;
@@ -53,23 +54,51 @@ export default function Todo() {
       return currentTask;
     });
     setTasks(updatedTasks);
-
     client &&
-      (await client.from("tasks").update({ done: !taskDone }).eq("id", id));
+      toast.promise(
+        client.from("tasks").update({ done: !taskDone }).eq("id", id),
+        {
+          loading: "Saving...",
+          success: "Task updated successfully",
+          error: "Error updating task",
+        },
+        {
+          style: { border: "0.125rem solid #ededed", color: "#222222" },
+          iconTheme: { primary: "#5ebcf1", secondary: "#FFFAEE" },
+        },
+        {
+          succes: { duration: 5000 },
+        }
+      );
   };
 
   const handleDeleteTask = async (id) => {
     const filteredTasks = tasks.filter((currentTask) => currentTask.id !== id);
     setTasks(filteredTasks);
-    client && (await client.from("tasks").delete().eq("id", id));
+    client &&
+      toast.promise(
+        client.from("tasks").delete().eq("id", id),
+        {
+          loading: "Deleting...",
+          success: "Task successfully deleted",
+          error: "Error deleting task",
+        },
+        {
+          style: { border: "0.125rem solid #ededed", color: "#222222" },
+          iconTheme: { primary: "#f1995e", secondary: "#FFFAEE" },
+        },
+        {
+          succes: { duration: 5000 },
+        }
+      );
   };
 
-  const AnimatedTask = animated(Task);
+  // useEffect(() => {
+  //   const tasksOrder = lodash.orderBy(tasks, ["created_at"], ["desc", "asc"]);
 
-  const fadeIn = useSpring({
-    to: { scale: 1, opacity: 1 },
-    from: { scale: 0, opacity: 0 },
-  });
+  //   console.log(tasks);
+  //   console.log(tasksOrder);
+  // }, []);
 
   return (
     <>
@@ -81,8 +110,7 @@ export default function Todo() {
           .filter((currentTask) => !currentTask.done)
           .map((task) => (
             <TaskCardContainer>
-              <AnimatedTask
-                style={fadeIn}
+              <Task
                 task={task}
                 onCheck={handleFinishTask}
                 onEdit={handleEditTask}

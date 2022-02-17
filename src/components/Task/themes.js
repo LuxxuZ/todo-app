@@ -12,7 +12,7 @@ export const yesterdayCard = {
 };
 
 export const defaultDate = {
-  width: "6.25rem",
+  width: "7rem",
   bg: "#f9d4d4",
   color: "#e04949",
 };

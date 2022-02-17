@@ -15,3 +15,7 @@ body {
 button {
   font-family: "Poppins", sans-serif;
 }
+
+p {
+  margin: 0;
+}

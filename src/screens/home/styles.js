@@ -40,6 +40,13 @@ export const FormMainContainer = styled(animated.div)`
   }
 
   animation: formFadeIn 250ms ease-out forwards 300ms;
+
+  /* 
+  ${({ firstLoad }) =>
+    firstLoad === "true" &&
+    css`
+      opacity: 0;
+    `} */
 `;
 
 export const SignInContainerRow = styled.div`
