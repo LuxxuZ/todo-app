@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext, useMemo } from "react";
-import { createClient, payload } from "@supabase/supabase-js";
+import { useState, useEffect, useContext } from "react";
 import { useSpring, config } from "react-spring";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -7,7 +6,6 @@ import {
   SupabaseContext,
   TodoContext,
   AuthContext,
-  TaskLoadContext,
 } from "../../utilities/context-wrapper";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -15,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 import { HiPlus } from "react-icons/hi";
 import { FiLogOut } from "react-icons/fi";
 
-import { TaskProvider } from "../../utilities/context-wrapper";
 import {
   ButtonContainer,
   MainContainer,
@@ -49,20 +46,18 @@ export default function Tasks() {
   const addTaskDefText = "Add a new Task";
   const navigate = useNavigate();
 
-  useEffect(() => {
-    client && setAuthToken(client.auth.session());
-  }, []);
 
   useEffect(() => {
+    client && setAuthToken(client.auth.session());
+
     !authToken && navigate("../");
-  }, [authToken]);
+  }, [client, authToken]);
 
   useEffect(() => {
     if (authToken) {
       const { user } = authToken || "Guest";
       setUsername(user.user_metadata.username || user.user_metadata.name);
 
-      toast.promise(
         client &&
           client
             .from("tasks")
@@ -70,26 +65,14 @@ export default function Tasks() {
             .eq("user_id", user.id)
             .then(({ data = [] }) => {
               setTasks(data);
-            }),
-        {
-          loading: "Loading...",
-          success: "Tasks loaded successfully",
-          error: "Error loading tasks",
-        },
-        {
-          style: { border: "0.125rem solid #ededed", color: "#222222" },
-          iconTheme: { primary: "#5ebcf1", secondary: "#FFFAEE" },
-        },
-        {
-          succes: { duration: 5000 },
-        }
-      );
+            }).catch(() => toast.error("ERROR"));
+       
     }
   }, [client]);
 
   const handleAddTask = async (event) => {
-    const { user } = authToken;
     event.preventDefault();
+    const { user } = authToken;
 
     setTasks([
       ...tasks,

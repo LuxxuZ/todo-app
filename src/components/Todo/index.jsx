@@ -1,7 +1,6 @@
-import { useContext, useState, useCallback, useMemo, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { lodash, orderBy } from "lodash.orderby";
-import toast, { Toaster } from "react-hot-toast";
+import { useContext, useMemo} from "react";
+
+import toast from "react-hot-toast";
 
 import { TodoText } from "../../screens/tasks/styles";
 import { TaskCardContainer, TasksContainer } from "./styles";
@@ -9,17 +8,23 @@ import Task from "../Task";
 import {
   TodoContext,
   SupabaseContext,
-  TaskLoadContext,
 } from "../../utilities/context-wrapper";
 
-import { useSpring, animated, config } from "react-spring";
 
 export default function Todo() {
   const client = useContext(SupabaseContext);
   const { tasks, setTasks } = useContext(TodoContext);
-  const [taskLoaded, setTaskLoaded] = useState(false);
 
-  // const [taskEstate, setTaskEstate] = useState(false);
+
+  const toastFinishStyles = {
+    style: { border: "0.125rem solid #ededed", color: "#222222" },
+    iconTheme: { primary: "#5ebcf1", secondary: "#FFFAEE" },
+  }
+
+  const toastDeleteStyles = {
+    style: { border: "0.125rem solid #ededed", color: "#222222" },
+    iconTheme: { primary: "#f1995e", secondary: "#FFFAEE" },
+  }
 
   const { pendingSize, finishedSize } = useMemo(
     () => ({
@@ -54,7 +59,7 @@ export default function Todo() {
       return currentTask;
     });
     setTasks(updatedTasks);
-    client &&
+
       toast.promise(
         client.from("tasks").update({ done: !taskDone }).eq("id", id),
         {
@@ -62,13 +67,10 @@ export default function Todo() {
           success: "Task updated successfully",
           error: "Error updating task",
         },
-        {
-          style: { border: "0.125rem solid #ededed", color: "#222222" },
-          iconTheme: { primary: "#5ebcf1", secondary: "#FFFAEE" },
-        },
+        toastFinishStyles,
         {
           succes: { duration: 5000 },
-        }
+        },
       );
   };
 
@@ -83,22 +85,13 @@ export default function Todo() {
           success: "Task successfully deleted",
           error: "Error deleting task",
         },
-        {
-          style: { border: "0.125rem solid #ededed", color: "#222222" },
-          iconTheme: { primary: "#f1995e", secondary: "#FFFAEE" },
-        },
+          toastDeleteStyles,
         {
           succes: { duration: 5000 },
         }
       );
   };
 
-  // useEffect(() => {
-  //   const tasksOrder = lodash.orderBy(tasks, ["created_at"], ["desc", "asc"]);
-
-  //   console.log(tasks);
-  //   console.log(tasksOrder);
-  // }, []);
 
   return (
     <>

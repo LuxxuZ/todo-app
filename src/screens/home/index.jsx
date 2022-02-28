@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useSpring, animated, config } from "react-spring";
+import { useNavigate } from "react-router-dom";
+import { useSpring, config } from "react-spring";
 
 import {
   SupabaseContext,
   AuthContext,
-  TodoContext,
 } from "../../utilities/context-wrapper";
 
 import { TodoText } from "../tasks/styles";
@@ -35,9 +34,9 @@ import {
   AnimatedLoadingCircle,
 } from "./styles";
 
-import Logo from "../../images/signInLogo.svg";
-import GoogleLogo from "../../images/Google_Logo.svg";
-import GithubLogo from "../../images/Github_Logo.png";
+import Logo from "../../images/sign_in_logo.svg";
+import GoogleLogo from "../../images/google_logo.svg";
+import GithubLogo from "../../images/github_logo.png";
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -51,7 +50,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState();
+  const [loginError, setLoginError] = useState("");
 
   const [buttonPressed, setButtonPressed] = useState(false);
   const [googleButtonPressed, setGoogleButtonPressed] = useState(false);
@@ -75,9 +74,6 @@ function Home() {
     config: config.wobbly,
   });
 
-  const onStorageChange = (e) => {
-    console.log(e);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -90,9 +86,7 @@ function Home() {
       })
       .then((session) => {
         const credentialsError = session.error;
-        setLoginError(credentialsError);
-        // setAuthToken(client.auth.session());
-        // console.log(loginError);
+        setLoginError(credentialsError.message);
         credentialsError && setIsLoading(false);
       })
 
@@ -250,7 +244,7 @@ function Home() {
             {loginError ? (
               <TextErrorContainer>
                 <TodoText margin="4px" size="14px" color="#dd5454">
-                  Your email or password are incorrect
+                  {loginError}
                 </TodoText>
               </TextErrorContainer>
             ) : (

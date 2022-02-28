@@ -12,24 +12,7 @@ export const TaskCard = styled(animated.div)`
   margin-bottom: 1.875rem;
   border-radius: 1.25rem;
 
-  /* @keyframes taskFadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(20%);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(102%);
-    }
-    70% {
-      transform: scale(98%);
-    }
-    100% {
-      transform: scale(100%);
-    }
-  }
 
-  animation: taskFadeIn 450ms ease-in-out forwards; */
 `;
 
 export const TaskContainer = styled.div`
@@ -63,11 +46,11 @@ export const DateCard = styled.div`
   justify-content: center;
   align-items: center;
   padding-inline: 10px;
-  min-width: ${(props) => props.theme.width};
+  min-width: 7rem;
   max-width: 7.25rem;
   height: 1.875rem;
-  color: ${(props) => props.theme.color};
-  background-color: ${(props) => props.theme.bg};
+  color: ${(props) => props.$theme.color};
+  background-color: ${(props) => props.$theme.bg};
   border-radius: 0.4375rem;
 `;
 

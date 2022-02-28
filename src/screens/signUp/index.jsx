@@ -29,9 +29,9 @@ import {
   AnimatedLoadingCircle,
   FormNameContainer,
 } from "./styles";
-import SignUpLogo from "../../images/signUpLogo.svg";
-import GoogleLogo from "../../images/Google_Logo.svg";
-import GithubLogo from "../../images/Github_Logo.png";
+import SignUpLogo from "../../images/sign_up_logo.svg";
+import GoogleLogo from "../../images/google_logo.svg";
+import GithubLogo from "../../images/github_logo.png";
 
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
@@ -99,7 +99,6 @@ function Home() {
           setIsLoading(false);
         }
         setAuthToken(localStorage.getItem("supabase.auth.token"));
-        // console.log(signUpError);
       });
   };
 

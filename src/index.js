@@ -1,19 +1,17 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Home from "./screens/home";
 import SignUp from "./screens/signUp";
 import Tasks from "./screens/tasks";
-import Redirect from "./screens/redirect";
 import reportWebVitals from "./reportWebVitals";
 import {
   SupabaseProvider,
   TodoProvider,
   AuthProvider,
 } from "./utilities/context-wrapper";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 
-const Auth = () => {};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,7 +23,6 @@ ReactDOM.render(
                 <Route path="/" element={<Home />} />
                 <Route path="tasks" element={<Tasks />} />
                 <Route path="register" element={<SignUp />} />
-                <Route path="/redirect" element={<Redirect />} />
               </Routes>
             </BrowserRouter>
         </TodoProvider>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ButtonContainer,
   TaskCard,
@@ -23,7 +23,7 @@ import {
 import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
-import { useSpring, useChain, config } from "react-spring";
+import { useSpring, config } from "react-spring";
 
 const DATE_THEME = {
   Today: todayCard,
@@ -32,13 +32,9 @@ const DATE_THEME = {
 };
 
 export default function Task({
-  content,
-  id,
   onCheck,
-  done,
   onEdit,
   task,
-  created_at,
   onDelete,
 }) {
   const [editMode, setEditMode] = useState(false);
@@ -69,7 +65,7 @@ export default function Task({
     !task.done && setEditMode(true);
   };
 
-  const getDate = (date) => {
+  const getDate = useCallback((date) => {
     const daysDiference = differenceInDays(new Date(), new Date(date));
     switch (daysDiference) {
       case 0:
@@ -81,7 +77,7 @@ export default function Task({
       default:
         return null;
     }
-  };
+  }, []);
 
   const fadeIn = useSpring({
     to: { scale: 1, opacity: 1 },
@@ -89,10 +85,6 @@ export default function Task({
     config: config.stiff,
   });
 
-  const deleteAnim = useSpring({
-    from: { scale: 1 },
-    to: { scale: 0 },
-  });
 
   useEffect(() => {
     setTaskAnim(fadeIn);
@@ -131,7 +123,7 @@ export default function Task({
             )}
           </TaskTextContainer>
           <DateContainer>
-            <DateCard theme={DATE_THEME[getDate(task.created_at)]}>
+            <DateCard $theme={DATE_THEME[getDate(task.created_at)]}>
               <CalendarDiv>
                 <BsCalendar />
               </CalendarDiv>
