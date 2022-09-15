@@ -8,12 +8,22 @@ export const MainContainer = styled.div`
   height: 100vh;
 `;
 
+export const TittleMainContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
 export const TittleContainer = styled(animated.div)`
   display: flex;
   flex-direction: row;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
   align-items: center;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  } ;
 `;
 
 export const TodoTextContainer = styled.div`
@@ -38,6 +48,9 @@ export const LogOutButton = styled(animated.button)`
   margin: 0;
   border: 0;
   outline-color: #e04949;
+
+  @media (max-width: 768) {
+  }
 `;
 
 export const TodoContainer = styled.div`
@@ -50,9 +63,14 @@ export const TodoContainer = styled.div`
 `;
 
 export const NewTaskDiv = styled(animated.div)`
+  display: flex;
   margin-bottom: 1.875rem;
   height: 4.688rem;
   width: 100%;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 export const NewTaskContainer = styled(animated.div)`
@@ -67,10 +85,15 @@ export const NewTaskContainer = styled(animated.div)`
   background-color: #f3f3f3;
   border-radius: 1.25rem;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    border-radius: 0.625rem;
+  }
 `;
 
 export const TaskInput = styled.input`
-  width: 31.25rem;
+  width: 90%;
   height: 1.875rem;
   border: 0;
   background-color: #f3f3f3;
@@ -78,6 +101,10 @@ export const TaskInput = styled.input`
   font-size: 1.375rem;
   font-weight: normal;
   font-family: "Poppins", sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  } ;
 `;
 
 export const TodoText = styled.p`
@@ -94,12 +121,21 @@ export const TodoText = styled.p`
   color: ${(props) => props.color};
   user-select: ${(props) => props.user_select};
   text-align: ${(props) => props.t_align};
+
+  @media (max-width: 768px) {
+    display: ${(props) => props.smDisplay};
+    font-size: ${(props) => props.smSize};
+  }
 `;
 
 export const Title = styled.h1`
   font-weight: bold;
   font-size: 1.75rem;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const TaskButton = styled.div`
@@ -112,7 +148,13 @@ export const TaskButton = styled.div`
   border-radius: 0.625rem;
   color: #ffff;
   font-size: 1.25rem;
-  margin-right: 0.938rem;
+
+  @media (max-width: 768px) {
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 0.4375rem;
+    font-size: 1.125rem;
+  }
 
   ${(props) =>
     props.checkButton &&
@@ -131,9 +173,22 @@ export const TaskButton = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   margin-right: 0.375rem;
 `;
 
-export const TodoForm = styled.form``;
+export const TodoComponentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+export const TodoForm = styled.form`
+  display: flex;
+  width: 100%;
+`;

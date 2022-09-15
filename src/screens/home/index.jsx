@@ -2,10 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSpring, config } from "react-spring";
 
-import {
-  SupabaseContext,
-  AuthContext,
-} from "../../utilities/context-wrapper";
+import { SupabaseContext, AuthContext } from "../../utilities/context-wrapper";
 
 import { TodoText } from "../tasks/styles";
 import {
@@ -35,8 +32,8 @@ import {
 } from "./styles";
 
 import Logo from "../../images/sign_in_logo.svg";
-import GoogleLogo from "../../images/google_logo.svg";
-import GithubLogo from "../../images/github_logo.png";
+import GoogleLogo from "../../images/Google_Logo.svg";
+import GithubLogo from "../../images/Github_Logo.png";
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -51,13 +48,21 @@ function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [tittleDisplay, setTittleDisplay] = useState("visible");
 
-  const [buttonPressed, setButtonPressed] = useState(false);
+  const [tittleButtonPressed, setTittleButtonPressed] = useState(false);
+  const [formButtonPressed, setFormButtonPressed] = useState(false);
   const [googleButtonPressed, setGoogleButtonPressed] = useState(false);
   const [gitButtonPressed, setGitButtonPressed] = useState(false);
 
-  const buttonAnim = useSpring({
-    to: { scale: buttonPressed ? 0.9 : 1 },
+  const tittleButtonAnim = useSpring({
+    to: { scale: tittleButtonPressed ? 0.9 : 1 },
+    from: { scale: 1 },
+    config: config.wobbly,
+  });
+
+  const formButtonAnim = useSpring({
+    to: { scale: formButtonPressed ? 0.9 : 1 },
     from: { scale: 1 },
     config: config.wobbly,
   });
@@ -73,7 +78,6 @@ function Home() {
     from: { scale: 1 },
     config: config.wobbly,
   });
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -122,6 +126,7 @@ function Home() {
       client.auth.onAuthStateChange((_event, session) => {
         setAuthToken(session);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   useEffect(() => {
@@ -129,20 +134,21 @@ function Home() {
       setIsLoading(true);
       navigate("../tasks");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken]);
 
   return (
     <HomeMainContainer>
-      <TitleContainer>
+      <TitleContainer display={!firstLoading ? tittleDisplay : "hidden"}>
         <TextContainer id="renderAnimation">
-          <TodoText size="3.375rem" weight="700" margin="0">
+          <TodoText size="3.375rem" smSize="2.5rem" weight="700" margin="0">
             Ricardo Zsabo{" "}
             <TodoText weight="500" margin="0">
               TODO List
             </TodoText>
           </TodoText>
         </TextContainer>
-        <LogoContainer id="renderAnimation">
+        <LogoContainer smHeight="30vh" id="renderAnimation">
           <LogoImg
             src={Logo}
             height="100%"
@@ -151,6 +157,25 @@ function Home() {
             draggable="false"
           />
         </LogoContainer>
+        <LoginButton
+          onMouseDown={() => setTittleButtonPressed(true)}
+          onFocus={() => setTittleButtonPressed(true)}
+          onMouseUp={() => setTittleButtonPressed(false)}
+          onMouseLeave={() => setTittleButtonPressed(false)}
+          onTouchStart={() => setTittleButtonPressed(true)}
+          onTouchEnd={() => setTittleButtonPressed(false)}
+          onBlur={() => setTittleButtonPressed(false)}
+          onClick={() => setTittleDisplay("hidden")}
+          style={tittleButtonAnim}
+          display="none"
+          smDisplay="flex"
+          bgColor="#F3F3F3"
+          outlineColor="#EDEDED"
+          textColor="#5EBCF1"
+          marginT="8px"
+        >
+          Login
+        </LoginButton>
       </TitleContainer>
       <FormMainContainer firstLoad={firstLoading}>
         <SignInContainer id="renderAnimation">
@@ -223,12 +248,18 @@ function Home() {
 
                 <ButtonContainer>
                   <LoginButton
-                    onMouseDown={() => setButtonPressed(true)}
-                    onFocus={() => setButtonPressed(true)}
-                    onMouseUp={() => setButtonPressed(false)}
-                    onMouseLeave={() => setButtonPressed(false)}
-                    onBlur={() => setButtonPressed(false)}
-                    style={buttonAnim}
+                    onMouseDown={() => setFormButtonPressed(true)}
+                    onFocus={() => setFormButtonPressed(true)}
+                    onMouseUp={() => setFormButtonPressed(false)}
+                    onMouseLeave={() => setFormButtonPressed(false)}
+                    onTouchStart={() => setFormButtonPressed(true)}
+                    onTouchEnd={() => setFormButtonPressed(false)}
+                    onBlur={() => setFormButtonPressed(false)}
+                    style={formButtonAnim}
+                    display="flex"
+                    bgColor="#54aee0"
+                    outlineColor="#1c9add"
+                    textColor="#f3f3f3"
                   >
                     {isLoading ? (
                       <AnimatedLoadingCircle>
@@ -261,6 +292,8 @@ function Home() {
               onFocus={() => setGoogleButtonPressed(true)}
               onMouseUp={() => setGoogleButtonPressed(false)}
               onMouseLeave={() => setGoogleButtonPressed(false)}
+              onTouchStart={() => setGoogleButtonPressed(true)}
+              onTouchEnd={() => setGoogleButtonPressed(false)}
               onBlur={() => setGoogleButtonPressed(false)}
               style={googleButtonAnim}
             >
@@ -274,6 +307,8 @@ function Home() {
               onFocus={() => setGitButtonPressed(true)}
               onMouseUp={() => setGitButtonPressed(false)}
               onMouseLeave={() => setGitButtonPressed(false)}
+              onTouchStart={() => setGitButtonPressed(true)}
+              onTouchEnd={() => setGitButtonPressed(false)}
               onBlur={() => setGitButtonPressed(false)}
               style={gitButtonAnim}
             >

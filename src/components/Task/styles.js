@@ -3,7 +3,6 @@ import { animated } from "react-spring";
 
 export const TaskCard = styled(animated.div)`
   display: flex;
-  padding-left: 0.5rem;
   justify-content: start;
   width: 100%;
   margin-top: 0.5rem;
@@ -12,7 +11,9 @@ export const TaskCard = styled(animated.div)`
   margin-bottom: 1.875rem;
   border-radius: 1.25rem;
 
-
+  @media (max-width: 768px) {
+    border-radius: 0.625rem;
+  }
 `;
 
 export const TaskContainer = styled.div`
@@ -52,6 +53,11 @@ export const DateCard = styled.div`
   color: ${(props) => props.$theme.color};
   background-color: ${(props) => props.$theme.bg};
   border-radius: 0.4375rem;
+
+  @media (max-width: 768px) {
+    min-width: 4.375rem;
+    max-width: 4.6875rem;
+  }
 `;
 
 export const CalendarDiv = styled.div`
@@ -65,7 +71,7 @@ export const TaskTextContainer = styled.div`
 
 export const EditInput = styled.input`
   margin-block: 1.375rem;
-  width: 21.875rem;
+  width: 90%;
   border-width: 0 0 1px;
   border-color: #e5e5e5;
   background-color: transparent;
@@ -73,6 +79,10 @@ export const EditInput = styled.input`
   font-size: 1.375rem;
   font-weight: normal;
   font-family: "Poppins", sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 export const DeleteButtonDiv = styled.div`
@@ -86,8 +96,12 @@ export const DeleteButtonDiv = styled.div`
 export const DeleteButton = styled.div`
   width: 2.25rem;
   height: 2.25rem;
-  font-size: 22px;
+  font-size: 1.375rem;
   background-color: transparent;
   color: #5ebcf1;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 1.125rem;
+  }
 `;

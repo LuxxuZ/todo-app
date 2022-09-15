@@ -1,30 +1,25 @@
-import { useContext, useMemo} from "react";
+import { useContext, useMemo } from "react";
 
 import toast from "react-hot-toast";
 
 import { TodoText } from "../../screens/tasks/styles";
-import { TaskCardContainer, TasksContainer } from "./styles";
+import { TaskCardContainer, TasksContainer, TodoMainContainer } from "./styles";
 import Task from "../Task";
-import {
-  TodoContext,
-  SupabaseContext,
-} from "../../utilities/context-wrapper";
-
+import { TodoContext, SupabaseContext } from "../../utilities/context-wrapper";
 
 export default function Todo() {
   const client = useContext(SupabaseContext);
   const { tasks, setTasks } = useContext(TodoContext);
 
-
   const toastFinishStyles = {
     style: { border: "0.125rem solid #ededed", color: "#222222" },
     iconTheme: { primary: "#5ebcf1", secondary: "#FFFAEE" },
-  }
+  };
 
   const toastDeleteStyles = {
     style: { border: "0.125rem solid #ededed", color: "#222222" },
     iconTheme: { primary: "#f1995e", secondary: "#FFFAEE" },
-  }
+  };
 
   const { pendingSize, finishedSize } = useMemo(
     () => ({
@@ -60,18 +55,18 @@ export default function Todo() {
     });
     setTasks(updatedTasks);
 
-      toast.promise(
-        client.from("tasks").update({ done: !taskDone }).eq("id", id),
-        {
-          loading: "Saving...",
-          success: "Task updated successfully",
-          error: "Error updating task",
-        },
-        toastFinishStyles,
-        {
-          succes: { duration: 5000 },
-        },
-      );
+    toast.promise(
+      client.from("tasks").update({ done: !taskDone }).eq("id", id),
+      {
+        loading: "Saving...",
+        success: "Task updated successfully",
+        error: "Error updating task",
+      },
+      toastFinishStyles,
+      {
+        succes: { duration: 5000 },
+      }
+    );
   };
 
   const handleDeleteTask = async (id) => {
@@ -85,49 +80,54 @@ export default function Todo() {
           success: "Task successfully deleted",
           error: "Error deleting task",
         },
-          toastDeleteStyles,
+        toastDeleteStyles,
         {
           succes: { duration: 5000 },
         }
       );
   };
 
-
   return (
     <>
-      {tasks.some((task) => !task.done) && (
-        <TodoText size="1.375rem">Tasks - {pendingSize}</TodoText>
-      )}
-      <TasksContainer>
-        {tasks
-          .filter((currentTask) => !currentTask.done)
-          .map((task) => (
-            <TaskCardContainer>
-              <Task
-                task={task}
-                onCheck={handleFinishTask}
-                onEdit={handleEditTask}
-                onDelete={handleDeleteTask}
-              />
-            </TaskCardContainer>
-          ))}
-      </TasksContainer>
-      {tasks.some((task) => task.done) && (
-        <TodoText size="1.375rem">Completed Tasks - {finishedSize}</TodoText>
-      )}
-      <TasksContainer>
-        {tasks
-          .filter((finishedTask) => finishedTask.done)
-          .map((task) => (
-            <TaskCardContainer>
-              <Task
-                task={task}
-                onCheck={handleFinishTask}
-                onDelete={handleDeleteTask}
-              />
-            </TaskCardContainer>
-          ))}
-      </TasksContainer>
+      <TodoMainContainer>
+        {tasks.some((task) => !task.done) && (
+          <TodoText size="1.375rem" smSize="1rem">
+            Tasks - {pendingSize}
+          </TodoText>
+        )}
+        <TasksContainer>
+          {tasks
+            .filter((currentTask) => !currentTask.done)
+            .map((task) => (
+              <TaskCardContainer>
+                <Task
+                  task={task}
+                  onCheck={handleFinishTask}
+                  onEdit={handleEditTask}
+                  onDelete={handleDeleteTask}
+                />
+              </TaskCardContainer>
+            ))}
+        </TasksContainer>
+        {tasks.some((task) => task.done) && (
+          <TodoText size="1.375rem" smSize="1rem">
+            Completed Tasks - {finishedSize}
+          </TodoText>
+        )}
+        <TasksContainer>
+          {tasks
+            .filter((finishedTask) => finishedTask.done)
+            .map((task) => (
+              <TaskCardContainer>
+                <Task
+                  task={task}
+                  onCheck={handleFinishTask}
+                  onDelete={handleDeleteTask}
+                />
+              </TaskCardContainer>
+            ))}
+        </TasksContainer>
+      </TodoMainContainer>
     </>
   );
 }

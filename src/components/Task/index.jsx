@@ -24,6 +24,7 @@ import { BsCheckLg, BsCalendar } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { differenceInDays, format } from "date-fns/esm";
 import { useSpring, config } from "react-spring";
+import { useLongPress } from "use-long-press";
 
 const DATE_THEME = {
   Today: todayCard,
@@ -31,12 +32,7 @@ const DATE_THEME = {
   null: defaultDate,
 };
 
-export default function Task({
-  onCheck,
-  onEdit,
-  task,
-  onDelete,
-}) {
+export default function Task({ onCheck, onEdit, task, onDelete }) {
   const [editMode, setEditMode] = useState(false);
   const [taskContent, setTaskContent] = useState(task.content);
   const [taskAnim, setTaskAnim] = useState();
@@ -61,9 +57,13 @@ export default function Task({
     onDelete(task.id);
   };
 
-  const handleDoubleClick = () => {
+  const handleEnableEdit = () => {
     !task.done && setEditMode(true);
   };
+
+  const touchBind = useLongPress(handleEnableEdit, {
+    threshold: 400,
+  });
 
   const getDate = useCallback((date) => {
     const daysDiference = differenceInDays(new Date(), new Date(date));
@@ -85,9 +85,9 @@ export default function Task({
     config: config.stiff,
   });
 
-
   useEffect(() => {
     setTaskAnim(fadeIn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -99,7 +99,7 @@ export default function Task({
           </TaskButton>
         </ButtonContainer>
         <TasksContentContainer>
-          <TaskTextContainer onDoubleClick={handleDoubleClick}>
+          <TaskTextContainer onDoubleClick={handleEnableEdit} {...touchBind()}>
             {editMode ? (
               <TodoForm onSubmit={handleEdit} spellCheck="false">
                 <EditInput
@@ -115,6 +115,7 @@ export default function Task({
               <TodoText
                 decoration={textDecoration}
                 size="1.375rem"
+                smSize="1rem"
                 t_align="left"
                 margin_y="1em"
               >
@@ -127,7 +128,7 @@ export default function Task({
               <CalendarDiv>
                 <BsCalendar />
               </CalendarDiv>
-              <TodoText size="0.9375rem">
+              <TodoText size="0.9375rem" smSize="0.625rem">
                 {getDate(task.created_at) ||
                   format(new Date(task.created_at), "dd/MM/yyyy")}
               </TodoText>

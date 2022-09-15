@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { animated } from "react-spring";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,13 @@ export const TitleContainer = styled(animated.div)`
   background-color: #07b5cd;
   width: 50vw;
   height: 100vh;
+
+  @media (max-width: 768px) {
+    visibility: ${(props) => props.display};
+    width: 100vw;
+    position: absolute;
+    z-index: 50;
+  }
 `;
 
 export const FormMainContainer = styled(animated.div)`
@@ -27,6 +34,10 @@ export const FormMainContainer = styled(animated.div)`
   width: 50vw;
   height: 100vh;
   opacity: 0;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 
   @keyframes formFadeIn {
     0% {
@@ -40,13 +51,6 @@ export const FormMainContainer = styled(animated.div)`
   }
 
   animation: formFadeIn 250ms ease-out forwards 300ms;
-
-  /* 
-  ${({ firstLoad }) =>
-    firstLoad === "true" &&
-    css`
-      opacity: 0;
-    `} */
 `;
 
 export const SignInContainerRow = styled.div`
@@ -135,6 +139,10 @@ export const LogoContainer = styled(animated.div)`
   height: 40vh;
   position: relative;
 
+  @media (max-width: 768px) {
+    height: ${(props) => props.smHeight};
+  }
+
   @keyframes fadeIn {
     0% {
       transform: translateX(-50%);
@@ -177,22 +185,27 @@ export const LinkText = styled(Link)`
 `;
 
 export const LoginButton = styled(animated.button)`
-  display: flex;
+  display: ${(props) => props.display};
   border: 0;
   width: 150px;
   height: 48px;
   align-items: center;
   justify-content: center;
   border-radius: 0.75rem;
-  background-color: #54aee0;
-  outline-color: #1c9add;
+  background-color: ${(props) => props.bgColor};
+  outline-color: ${(props) => props.outlineColor};
+  margin-top: ${(props) => props.marginT};
 
-  color: #ffffff;
+  color: ${(props) => props.textColor};
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 600;
   user-select: none;
   transition: all;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 
   @keyframes focusTransform {
     0% {

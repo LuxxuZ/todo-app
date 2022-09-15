@@ -10,8 +10,7 @@ import {
   TodoProvider,
   AuthProvider,
 } from "./utilities/context-wrapper";
-import { BrowserRouter, Route, Routes} from "react-router-dom";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>

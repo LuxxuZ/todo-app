@@ -10,8 +10,8 @@ export const yesterdayCard = {
 };
 
 export const defaultDate = {
-  bg: "#f9d4d4",
-  color: "#e04949",
+  bg: "#DFDFDF",
+  color: "#5F5F5F",
 };
 
 // Task Check Button

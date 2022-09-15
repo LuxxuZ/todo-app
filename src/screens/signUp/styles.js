@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { animated } from "react-spring";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,10 @@ export const TitleContainer = styled(animated.div)`
   background-color: #07b5cd;
   width: 50vw;
   height: 100vh;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const FormNameContainer = styled.div`
@@ -34,6 +38,10 @@ export const FormMainContainer = styled(animated.div)`
   width: 50vw;
   height: 100vh;
   opacity: 0;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 
   @keyframes formFadeIn {
     0% {
@@ -177,19 +185,27 @@ export const LinkText = styled(Link)`
 `;
 
 export const RegisterButton = styled(animated.button)`
-  display: flex;
-  margin-top: 1.25rem;
-  align-items: center;
-  justify-content: center;
+  display: ${(props) => props.display};
   border: 0;
-  border-radius: 0.75rem;
-  background-color: #54aee0;
   width: 150px;
   height: 48px;
-  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: ${(props) => props.bgColor};
+  outline-color: ${(props) => props.outlineColor};
+  margin-top: ${(props) => props.marginT};
+
+  color: ${(props) => props.textColor};
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 600;
+  user-select: none;
+  transition: all;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 
   @keyframes focusTransform {
     0% {
@@ -199,15 +215,13 @@ export const RegisterButton = styled(animated.button)`
       transform: scale(0.9);
     }
   }
-
-  &:focus-visible {
-    outline-color: #1c9add;
-  }
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-self: center;
+  margin-top: 1.25rem;
 `;
 
 export const AltSgUpMainContainer = styled.div`

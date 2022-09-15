@@ -30,8 +30,8 @@ import {
   FormNameContainer,
 } from "./styles";
 import SignUpLogo from "../../images/sign_up_logo.svg";
-import GoogleLogo from "../../images/google_logo.svg";
-import GithubLogo from "../../images/github_logo.png";
+import GoogleLogo from "../../images/Google_Logo.svg";
+import GithubLogo from "../../images/Github_Logo.png";
 
 import { HiMail } from "react-icons/hi";
 import { IoMdLock } from "react-icons/io";
@@ -108,7 +108,7 @@ function Home() {
         provider: "google",
       },
       {
-        redirectTo: "http://rztodolist.surge.sh/redirect",
+        redirectTo: "http://rztodolist.surge.sh/",
       }
     );
   };
@@ -119,13 +119,14 @@ function Home() {
         provider: "github",
       },
       {
-        redirectTo: "http://rztodolist.surge.sh/redirect",
+        redirectTo: "http://rztodolist.surge.sh/",
       }
     );
   };
 
   useEffect(() => {
     authToken && navigate("../tasks");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken]);
 
   return (
@@ -233,8 +234,14 @@ function Home() {
                     onFocus={() => setButtonPressed(true)}
                     onMouseUp={() => setButtonPressed(false)}
                     onMouseLeave={() => setButtonPressed(false)}
+                    onTouchStart={() => setButtonPressed(true)}
+                    onTouchEnd={() => setButtonPressed(false)}
                     onBlur={() => setButtonPressed(false)}
                     style={buttonAnimation}
+                    display="flex"
+                    bgColor="#54aee0"
+                    outlineColor="#1c9add"
+                    textColor="#f3f3f3"
                   >
                     {isLoading ? (
                       <AnimatedLoadingCircle>
@@ -267,6 +274,8 @@ function Home() {
               onFocus={() => setGoogleButtonPressed(true)}
               onMouseUp={() => setGoogleButtonPressed(false)}
               onMouseLeave={() => setGoogleButtonPressed(false)}
+              onTouchStart={() => setGoogleButtonPressed(true)}
+              onTouchEnd={() => setGoogleButtonPressed(false)}
               onBlur={() => setGoogleButtonPressed(false)}
               style={googleButtonAnim}
             >
@@ -280,6 +289,8 @@ function Home() {
               onFocus={() => setGitButtonPressed(true)}
               onMouseUp={() => setGitButtonPressed(false)}
               onMouseLeave={() => setGitButtonPressed(false)}
+              onTouchStart={() => setGitButtonPressed(true)}
+              onTouchEnd={() => setGitButtonPressed(false)}
               onBlur={() => setGitButtonPressed(false)}
               style={gitButtonAnim}
             >

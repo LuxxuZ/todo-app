@@ -24,9 +24,11 @@ import {
   TodoContainer,
   TodoText,
   TodoForm,
+  TittleMainContainer,
   TittleContainer,
   LogOutButton,
   TodoTextContainer,
+  TodoComponentContainer,
 } from "./styles";
 import Todo from "../../components/Todo";
 
@@ -35,7 +37,6 @@ export default function Tasks() {
 
   const [content, setContent] = useState("");
   const [focus, setFocus] = useState(false);
-  const [firstLoading, setFirstLoading] = useState(true);
   const [username, setUsername] = useState("Guest");
   const [buttonPressed, setButtonPressed] = useState(false);
   const [addTaskText, setAddTaskText] = useState("Add a new task");
@@ -46,11 +47,11 @@ export default function Tasks() {
   const addTaskDefText = "Add a new Task";
   const navigate = useNavigate();
 
-
   useEffect(() => {
     client && setAuthToken(client.auth.session());
 
     !authToken && navigate("../");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client, authToken]);
 
   useEffect(() => {
@@ -58,17 +59,18 @@ export default function Tasks() {
       const { user } = authToken || "Guest";
       setUsername(user.user_metadata.username || user.user_metadata.name);
 
-        client &&
-          client
-            .from("tasks")
-            .select("*")
-            .eq("user_id", user.id)
-            .then(({ data = [] }) => {
-              setTasks(data);
-            }).catch(() => toast.error("ERROR"));
-       
+      client &&
+        client
+          .from("tasks")
+          .select("*")
+          .eq("user_id", user.id)
+          .then(({ data = [] }) => {
+            setTasks(data);
+          })
+          .catch(() => toast.error("ERROR"));
     }
-  }, [client]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client, authToken]);
 
   const handleAddTask = async (event) => {
     event.preventDefault();
@@ -86,6 +88,7 @@ export default function Tasks() {
       },
     ]);
     setContent("");
+    setAddTaskText(addTaskDefText);
     setFocus(false);
 
     toast.promise(
@@ -133,33 +136,43 @@ export default function Tasks() {
   });
 
   const AddTaskAnim = useSpring({
-    to: { scale: focus ? 1.1 : 1 },
+    to: { scale: focus ? 1.05 : 1 },
     from: { scale: 1 },
   });
 
   return (
     <MainContainer>
       <TodoContainer>
-        <TittleContainer style={fadeIn}>
-          <TodoTextContainer>
-            <Title>Daily TODO List</Title>
-            <TodoText margin="0" size="1.375rem" weight="200" color="#939393">
-              {username}
-            </TodoText>
-          </TodoTextContainer>
-          <LogOutButton
-            onMouseDown={() => setButtonPressed(true)}
-            onFocus={() => setButtonPressed(true)}
-            onMouseUp={() => setButtonPressed(false)}
-            onMouseLeave={() => setButtonPressed(false)}
-            onBlur={() => setButtonPressed(false)}
-            onClick={handleLogOut}
-            style={buttonAnimation}
-          >
-            <FiLogOut />
-            Log Out
-          </LogOutButton>
-        </TittleContainer>
+        <TittleMainContainer>
+          <TittleContainer style={fadeIn}>
+            <TodoTextContainer>
+              <Title>Daily TODO List</Title>
+              <TodoText
+                margin="0"
+                size="1.375rem"
+                smSize="1.125rem"
+                weight="200"
+                color="#939393"
+              >
+                {username}
+              </TodoText>
+            </TodoTextContainer>
+            <LogOutButton
+              onMouseDown={() => setButtonPressed(true)}
+              onFocus={() => setButtonPressed(true)}
+              onMouseUp={() => setButtonPressed(false)}
+              onMouseLeave={() => setButtonPressed(false)}
+              onBlur={() => setButtonPressed(false)}
+              onClick={handleLogOut}
+              style={buttonAnimation}
+            >
+              <FiLogOut />
+              <TodoText size="1rem" smDisplay="none">
+                Log Out
+              </TodoText>
+            </LogOutButton>
+          </TittleContainer>
+        </TittleMainContainer>
         <NewTaskDiv>
           <NewTaskContainer
             style={AddTaskAnim}
@@ -174,7 +187,7 @@ export default function Tasks() {
             </ButtonContainer>
             <TodoForm onSubmit={handleAddTask} spellCheck="false">
               {!focus ? (
-                <TodoText size="1.375rem" user_select="none">
+                <TodoText size="1.375rem" smSize="1rem" user_select="none">
                   {addTaskText}
                 </TodoText>
               ) : (
@@ -186,13 +199,14 @@ export default function Tasks() {
                   onChange={(event) => handleSetValue(event, setContent)}
                   autoFocus={true}
                   onBlur={onBlurAddTask}
-                  firstLoading={firstLoading}
                 />
               )}
             </TodoForm>
           </NewTaskContainer>
         </NewTaskDiv>
-        <Todo />
+        <TodoComponentContainer>
+          <Todo />
+        </TodoComponentContainer>
         <Toaster />
       </TodoContainer>
     </MainContainer>
